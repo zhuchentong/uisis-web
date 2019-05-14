@@ -296,11 +296,11 @@ export class SettingDrawerComponent {
     this.settingSrv.setLayout(name, value);
   }
 
-  private resetData(nowData?: Object, run = true) {
+  private resetData(nowData?: object, run = true) {
     nowData = nowData || {};
     const data = deepCopy(DEFAULT_VARS);
     Object.keys(data).forEach(key => {
-      const value = nowData![`@${key}`] || data[key].default || '';
+      const value = nowData[`@${key}`] || data[key].default || '';
       data[key].value = value === `@primary-color` ? this.color : value;
     });
     this.data = data;

@@ -21,6 +21,8 @@ export class UserRegisterComponent implements OnDestroy {
     pass: 'normal',
     pool: 'exception',
   };
+  count = 0;
+  interval$: any;
 
   constructor(fb: FormBuilder, private router: Router, public http: _HttpClient, public msg: NzMessageService) {
     this.form = fb.group({
@@ -54,7 +56,7 @@ export class UserRegisterComponent implements OnDestroy {
     if (!control || !control.parent) {
       return null;
     }
-    if (control.value !== control.parent.get('password')!.value) {
+    if (control.value !== control.parent.get('password').value) {
       return { equar: true };
     }
     return null;
@@ -82,9 +84,6 @@ export class UserRegisterComponent implements OnDestroy {
 
   // #region get captcha
 
-  count = 0;
-  interval$: any;
-
   getCaptcha() {
     if (this.mobile.invalid) {
       this.mobile.markAsDirty({ onlySelf: true });
@@ -102,10 +101,11 @@ export class UserRegisterComponent implements OnDestroy {
 
   submit() {
     this.error = '';
-    for (const i in this.form.controls) {
+    Object.keys(this.form.controls).forEach(i => {
       this.form.controls[i].markAsDirty();
       this.form.controls[i].updateValueAndValidity();
-    }
+    });
+
     if (this.form.invalid) {
       return;
     }

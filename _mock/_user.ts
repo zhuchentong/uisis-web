@@ -26,9 +26,9 @@ for (let i = 0; i < total; i += 1) {
 
 function genData(params: any) {
   let ret = [...list];
-  const pi = +params.pi,
-    ps = +params.ps,
-    start = (pi - 1) * ps;
+  const pi = +params.pi;
+  const ps = +params.ps;
+  const start = (pi - 1) * ps;
 
   if (params.no) {
     ret = ret.filter(data => data.no.indexOf(params.no) > -1);
@@ -100,7 +100,7 @@ export const USERS = {
   'POST /user/avatar': 'ok',
   'POST /login/account': (req: MockRequest) => {
     const data = req.body;
-    if (!(data.userName === 'admin' || data.userName === 'user') || data.password !== 'ng-alain.com') {
+    if (!(data.userName === 'admin' || data.userName === 'user') || data.password !== 'admin') {
       return { msg: `Invalid username or password（admin/ng-alain.com）` };
     }
     return {

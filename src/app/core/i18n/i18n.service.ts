@@ -93,7 +93,7 @@ export class I18NService implements AlainI18NService {
   }
 
   get change(): Observable<string> {
-    return this.change$.asObservable().pipe(filter(w => w != null)) as Observable<string>;
+    return this.change$.asObservable().pipe(filter(w => w != null));
   }
 
   use(lang: string): void {
@@ -107,7 +107,7 @@ export class I18NService implements AlainI18NService {
     return this._langs;
   }
   /** 翻译 */
-  fanyi(key: string, interpolateParams?: Object) {
+  fanyi(key: string, interpolateParams?: object) {
     return this.translate.instant(key, interpolateParams);
   }
   /** 默认语言 */

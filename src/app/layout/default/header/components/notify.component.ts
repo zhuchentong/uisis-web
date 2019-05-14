@@ -58,7 +58,7 @@ export class HeaderNotifyComponent {
     notices.forEach(item => {
       const newItem = { ...item };
       if (newItem.datetime)
-        newItem.datetime = distanceInWordsToNow(item.datetime!, {
+        newItem.datetime = distanceInWordsToNow(item.datetime, {
           locale: (window as any).__locale__,
         });
       if (newItem.extra && newItem.status) {
@@ -69,7 +69,7 @@ export class HeaderNotifyComponent {
           doing: 'gold',
         }[newItem.status];
       }
-      data.find(w => w.title === newItem.type)!.list.push(newItem);
+      data.find(w => w.title === newItem.type).list.push(newItem);
     });
     return data;
   }
