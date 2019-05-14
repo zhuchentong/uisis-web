@@ -4,13 +4,25 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      [
+        "app",
+        "passport",
+        "exception",
+        "layout",
+        "header"
+      ],
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      [
+        "app",
+        "passport",
+        "exception",
+        "layout",
+        "header"
+      ],
       "kebab-case"
     ]
   }
