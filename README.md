@@ -23,6 +23,13 @@
 
 English | [简体中文](README-zh_CN.md)
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
+
+作者：大康呢子
+链接：https://juejin.im/post/5be414c46fb9a049fa0f4052
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 ## Quick start
 
 ```bash
