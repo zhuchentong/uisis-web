@@ -105,27 +105,30 @@
     "typescript": "~3.2.2"
   },
   "lint-staged": {
-    "*.{cmd,html,json,md,sh,txt,xml,yml}": [
-      "editorconfig-tools fix",
-      "git add"
-    ],
-    "*.ts": [
-      "npm run lint:ts",
-      "prettier --write",
-      "git add"
-    ],
-    "*.less": [
-      "npm run lint:style",
-      "prettier --write",
-      "git add"
-    ],
+    "linters": {
+      "*.{cmd,html,json,md,sh,txt,xml,yml}": [
+        "editorconfig-tools fix",
+        "git add"
+      ],
+      "*.ts": [
+        "npm run lint:ts",
+        "prettier --write",
+        "git add"
+      ],
+      "*.less": [
+        "npm run lint:style",
+        "prettier --write",
+        "git add"
+      ]
+    },
     "ignore": [
       "src/assets/*"
     ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint-staged"
+      "pre-commit": "npm run lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
 }
