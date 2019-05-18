@@ -5,25 +5,25 @@
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzSize="large" nzPrefixIcon="user">
-            <input nz-input formControlName="userName" placeholder="username: admin or user" />
+            <input nz-input formControlName="userName" placeholder="请输入用户名" />
           </nz-input-group>
           <nz-form-explain *ngIf="userName.dirty && userName.errors">
-            {{ 'Please enter mobile number!' | translate }}
+            {{ '请输入正确的用户名格式!' | translate }}
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzSize="large" nzPrefixIcon="lock">
-            <input nz-input type="password" formControlName="password" placeholder="password: ng-alain.com" />
+            <input nz-input type="password" formControlName="password" placeholder="请输入密码" />
           </nz-input-group>
           <nz-form-explain *ngIf="password.dirty && password.errors">
-            {{ 'Please enter password!' | translate }}
+            {{ '请输入正确的密码格式!' | translate }}
           </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
     </nz-tab>
-    <nz-tab [nzTitle]="'app.login.tab-login-mobile' | translate">
+    <!-- <nz-tab [nzTitle]="'app.login.tab-login-mobile' | translate">
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzSize="large" nzPrefixIcon="user">
@@ -66,14 +66,14 @@
           </nz-row>
         </nz-form-control>
       </nz-form-item>
-    </nz-tab>
+    </nz-tab> -->
   </nz-tabset>
   <nz-form-item>
     <nz-col [nzSpan]="12">
       <label nz-checkbox formControlName="remember">{{ 'app.login.remember-me' | translate }}</label>
     </nz-col>
     <nz-col [nzSpan]="12" class="text-right">
-      <a class="forgot" (click)="msg.error('请找欧阳锋')">{{ 'app.login.forgot-password' | translate }}</a>
+      <a class="forgot" (click)="msg.error('请再好好想一想')">{{ 'app.login.forgot-password' | translate }}</a>
     </nz-col>
   </nz-form-item>
   <nz-form-item>
@@ -82,7 +82,7 @@
     </button>
   </nz-form-item>
 </form>
-<div class="other">
+<!-- <div class="other">
   {{ 'app.login.sign-in-with' | translate }}
   <i
     nz-tooltip="in fact Auth0 via window"
@@ -94,4 +94,4 @@
   <i nz-tooltip="in fact Github via redirect" (click)="open('github')" nz-icon nzType="taobao-circle" class="icon"></i>
   <i (click)="open('weibo', 'window')" nz-icon nzType="weibo-circle" class="icon"></i>
   <a class="register" routerLink="/passport/register">{{ 'app.login.signup' | translate }}</a>
-</div>
+</div> -->

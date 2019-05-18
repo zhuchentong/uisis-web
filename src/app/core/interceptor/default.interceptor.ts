@@ -6,7 +6,7 @@ import {
   HttpHandler,
   HttpErrorResponse,
   HttpEvent,
-  HttpResponseBase,
+  HttpResponseBase
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { mergeMap, catchError } from 'rxjs/operators';
@@ -30,7 +30,7 @@ const CODEMESSAGE = {
   500: '服务器发生错误，请检查服务器。',
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
-  504: '网关超时。',
+  504: '网关超时。'
 };
 
 /**
@@ -40,8 +40,8 @@ const CODEMESSAGE = {
 export class DefaultInterceptor implements HttpInterceptor {
   constructor(private injector: Injector) {}
 
-  private get notification(): NzNotificationService {
-    return this.injector.get(NzNotificationService);
+  get msg(): NzMessageService {
+    return this.injector.get(NzMessageService);
   }
 
   private goTo(url: string) {
@@ -49,12 +49,15 @@ export class DefaultInterceptor implements HttpInterceptor {
   }
 
   private checkStatus(ev: HttpResponseBase) {
-    if ((ev.status >= 200 && ev.status < 300) || ev.status === 401) {
-      return;
+    if (ev.status >= 200 && ev.status < 300) return;
+    let errortext = '';
+    if (ev.status === 400) {
+      errortext = ev['error'] && ev['error'].message;
+      return this.injector.get(NzNotificationService).error('请求错误', errortext);
     }
 
-    const errortext = CODEMESSAGE[ev.status] || ev.statusText;
-    this.notification.error(`请求错误 ${ev.status}: ${ev.url}`, errortext);
+    errortext = CODEMESSAGE[ev.status] || ev.statusText;
+    this.injector.get(NzNotificationService).error(`请求错误 ${ev.status}: ${ev.url}`, errortext);
   }
 
   private handleData(ev: HttpResponseBase): Observable<any> {
@@ -86,13 +89,14 @@ export class DefaultInterceptor implements HttpInterceptor {
         //     }
         // }
         break;
-      case 401:
-        this.notification.error(`未登录或登录已过期，请重新登录。`, ``);
-        // 清空 token 信息
+      case 401: // 未登录状态码
+        // 请求错误 401: https://preview.pro.ant.design/api/401 用户没有权限（令牌、用户名、密码错误）。
         this.injector.get(DA_SERVICE_TOKEN).clear();
         this.goTo('/passport/login');
         break;
       case 403:
+        this.injector.get(DA_SERVICE_TOKEN).clear();
+        break;
       case 404:
       case 500:
         this.goTo(`/exception/${ev.status}`);
@@ -109,20 +113,20 @@ export class DefaultInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // 统一加上服务端前缀
-    let url = req.url;
-    if (!url.startsWith('https://') && !url.startsWith('http://')) {
-      url = environment.SERVER_URL + url;
-    }
+    // let url = req.url
+    // if (!url.startsWith('https://') && !url.startsWith('http://')) {
+    //   url = environment.SERVER_URL + url
+    // }
 
-    const newReq = req.clone({ url });
-    return next.handle(newReq).pipe(
+    // const newReq = req.clone({ url })
+    return next.handle(req).pipe(
       mergeMap((event: any) => {
         // 允许统一对请求错误处理
         if (event instanceof HttpResponseBase) return this.handleData(event);
         // 若一切都正常，则后续操作
         return of(event);
       }),
-      catchError((err: HttpErrorResponse) => this.handleData(err)),
+      catchError((err: HttpErrorResponse) => this.handleData(err))
     );
   }
 }

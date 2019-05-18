@@ -7,9 +7,10 @@ import { Model } from 'app/model';
 import { classToPlain, plainToClass } from 'class-transformer';
 import { PageService, IRequestOption } from 'app/core/http';
 import * as qs from 'qs';
+import { _HttpClient } from '@delon/theme';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class NetService {
   // 请求头部信息
@@ -32,7 +33,7 @@ export class NetService {
         headers: this.generateRequestHeader(options),
         observe: 'response',
         responseType: 'json',
-        params: this.generateRequestParams(options),
+        params: this.generateRequestParams(options)
       })
       .pipe(
         // 取body数据
@@ -46,7 +47,7 @@ export class NetService {
 
           return options.model ? plainToClass(options.model, body) : body;
         }),
-        finalize(() => {}),
+        finalize(() => {})
       );
   }
 
@@ -79,7 +80,7 @@ export class NetService {
     }
 
     return new HttpParams({
-      fromString: qs.stringify(params),
+      fromString: qs.stringify(params)
     });
   }
 
@@ -107,7 +108,7 @@ export class NetService {
   private getPageParams(page: PageService) {
     return {
       pageIndex: page.pageIndex,
-      pageSize: page.pageSize,
+      pageSize: page.pageSize
     };
   }
 

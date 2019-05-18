@@ -25,7 +25,7 @@ const LANG = {
   abbr: 'zh',
   ng: ngLang,
   zorro: zorroLang,
-  delon: delonLang,
+  delon: delonLang
 };
 // #endregion
 
@@ -34,7 +34,7 @@ registerLocaleData(LANG.ng, LANG.abbr);
 const LANG_PROVIDES = [
   { provide: LOCALE_ID, useValue: LANG.abbr },
   { provide: NZ_I18N, useValue: LANG.zorro },
-  { provide: DELON_LOCALE, useValue: LANG.delon },
+  { provide: DELON_LOCALE, useValue: LANG.delon }
 ];
 // #endregion
 
@@ -49,9 +49,9 @@ const I18NSERVICE_MODULES = [
     loader: {
       provide: TranslateLoader,
       useFactory: I18nHttpLoaderFactory,
-      deps: [HttpClient],
-    },
-  }),
+      deps: [HttpClient]
+    }
+  })
 ];
 
 const I18NSERVICE_PROVIDES = [{ provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false }];
@@ -64,7 +64,7 @@ const FORM_MODULES = [JsonSchemaModule];
 // #region Http Interceptors
 const INTERCEPTOR_PROVIDES = [
   { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true },
-  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true }
 ];
 // #endregion
 
@@ -76,7 +76,7 @@ const LOG_MODULES = [LoggerModule.forRoot(isDevMode() ? Level.LOG : Level.ERROR)
 const GLOBAL_THIRD_MODULES = [
   NgxsModule.forRoot(states, { developmentMode: isDevMode() }),
   NgxsReduxDevtoolsPluginModule.forRoot(),
-  NgxsStoragePluginModule.forRoot(),
+  NgxsStoragePluginModule.forRoot()
 ];
 // #endregion
 
@@ -90,8 +90,8 @@ const APPINIT_PROVIDES = [
     provide: APP_INITIALIZER,
     useFactory: StartupServiceFactory,
     deps: [StartupService],
-    multi: true,
-  },
+    multi: true
+  }
 ];
 // #endregion
 
@@ -116,9 +116,9 @@ import { LayoutModule } from './layout/layout.module';
     ...I18NSERVICE_MODULES,
     ...FORM_MODULES,
     ...LOG_MODULES,
-    ...GLOBAL_THIRD_MODULES,
+    ...GLOBAL_THIRD_MODULES
   ],
   providers: [...LANG_PROVIDES, ...INTERCEPTOR_PROVIDES, ...I18NSERVICE_PROVIDES, ...APPINIT_PROVIDES],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
