@@ -1,9 +1,19 @@
 <page-header [action]="phActionTpl">
   <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
+    <button (click)="onCreate()" nz-button nzType="primary">新建</button>
+    <button (click)="onUpdate()" nz-button nzType="primary">修改</button>
+    <button (click)="onDelete()" nz-button nzType="primary">删除</button>
   </ng-template>
 </page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
-</nz-card>
+
+<div nz-row nzGutter="32">
+  <nz-col nzXs="24">
+    <nz-card>
+      <nz-tree #nzTreeComponent [nzExpandAll]="true" [nzData]="treeData"> </nz-tree>
+    </nz-card>
+  </nz-col>
+</div>
+
+<ng-template #organizationNameInput>
+  <input nz-input placeholder="请输入组织名称" [(ngModel)]="organizationName" />
+</ng-template>

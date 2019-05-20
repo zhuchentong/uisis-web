@@ -1,27 +1,26 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
+import { RouterModule } from '@angular/router'
 // delon
-import { AlainThemeModule } from '@delon/theme';
-import { DelonABCModule } from '@delon/abc';
-import { DelonACLModule } from '@delon/acl';
-import { DelonFormModule } from '@delon/form';
+import { AlainThemeModule } from '@delon/theme'
+import { DelonABCModule } from '@delon/abc'
+import { DelonACLModule } from '@delon/acl'
+import { DelonFormModule } from '@delon/form'
 // i18n
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core'
 
 // #region third libs
-import { NgZorroAntdModule } from 'ng-zorro-antd';
-import { CountdownModule } from 'ngx-countdown';
-const THIRDMODULES = [
-  NgZorroAntdModule,
-  CountdownModule
-];
+import { NgZorroAntdModule } from 'ng-zorro-antd'
+import { CountdownModule } from 'ngx-countdown'
+import { DictPipe } from './pipes/dict.pipe'
+const THIRDMODULES = [NgZorroAntdModule, CountdownModule]
 // #endregion
 
 // #region your componets & directives
-const COMPONENTS = [];
-const DIRECTIVES = [];
+const COMPONENTS = []
+const DIRECTIVES = []
+const PIPES = [DictPipe]
 // #endregion
 
 @NgModule({
@@ -40,7 +39,8 @@ const DIRECTIVES = [];
   declarations: [
     // your components
     ...COMPONENTS,
-    ...DIRECTIVES
+    ...DIRECTIVES,
+    ...PIPES
   ],
   exports: [
     CommonModule,
@@ -57,7 +57,8 @@ const DIRECTIVES = [];
     ...THIRDMODULES,
     // your components
     ...COMPONENTS,
-    ...DIRECTIVES
+    ...DIRECTIVES,
+    ...PIPES
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

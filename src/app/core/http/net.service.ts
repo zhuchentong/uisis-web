@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { map, finalize } from 'rxjs/operators';
-import { appConfig } from 'app/config/app.config';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Model } from 'app/model';
-import { classToPlain, plainToClass } from 'class-transformer';
-import { PageService, IRequestOption } from 'app/core/http';
-import * as qs from 'qs';
-import { _HttpClient } from '@delon/theme';
+import { Injectable } from '@angular/core'
+import { Observable, throwError } from 'rxjs'
+import { map, finalize } from 'rxjs/operators'
+import { appConfig } from 'app/config/app.config'
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { Model } from 'app/model'
+import { classToPlain, plainToClass } from 'class-transformer'
+import { PageService, IRequestOption } from 'app/core/http'
+import * as qs from 'qs'
+import { _HttpClient } from '@delon/theme'
 
 @Injectable({
   providedIn: 'root'
 })
 export class NetService {
   // 请求头部信息
-  private headers = new HttpHeaders();
+  private headers = new HttpHeaders()
   constructor(private http: HttpClient) {}
 
   /**
@@ -23,10 +23,11 @@ export class NetService {
    */
   public send(options: IRequestOption): Observable<any> {
     // 生成请求URL
-    const requestUrl: string = this.generateRequestUrl(options.service, options.append);
+    const requestUrl: string = this.generateRequestUrl(options.service, options.append)
     // 生成请求METHOD
-    const requestMethod: string = options.service.method;
-    this.generateRequestLoading(options);
+    const requestMethod: string = options.service.method
+
+    this.generateRequestLoading(options)
     return this.http
       .request(requestMethod, requestUrl, {
         body: this.generateRequestBody(options),
@@ -38,17 +39,17 @@ export class NetService {
       .pipe(
         // 取body数据
         map(response => {
-          let body = response.body;
+          let body = response.body
           // 更新分页数据
           if (options.page) {
-            const data = response.body as any;
-            body = data.content;
+            const data = response.body as any
+            body = data.content
           }
 
-          return options.model ? plainToClass(options.model, body) : body;
+          return options.model ? plainToClass(options.model, body) : body
         }),
         finalize(() => {})
-      );
+      )
   }
 
   /**
@@ -56,7 +57,7 @@ export class NetService {
    * @param options 请求选项
    */
   private generateRequestUrl(options: any, append: string[] = []): string {
-    return [appConfig.server, options.controller, options.action, ...append].filter(x => x).join('/');
+    return [appConfig.server, options.controller, options.action, ...append].filter(x => x).join('/')
   }
 
   /**
@@ -65,23 +66,23 @@ export class NetService {
    */
   private generateRequestParams(options): HttpParams {
     if (!['GET', 'DELETE'].includes(options.service.method)) {
-      return null;
+      return null
     }
 
     // TODO:分页处理
-    let params = options.params;
+    let params = options.params
 
     if (options.params instanceof Model) {
-      params = classToPlain(options.params);
+      params = classToPlain(options.params)
     }
 
     if (options.page) {
-      Object.assign(options.params || {}, this.getPageParams(options.page));
+      params = Object.assign(params || {}, this.getPageParams(options.page))
     }
 
     return new HttpParams({
       fromString: qs.stringify(params)
-    });
+    })
   }
 
   /**
@@ -90,26 +91,26 @@ export class NetService {
    */
   private generateRequestBody(options): object {
     if (!['POST', 'PUT'].includes(options.service.method)) {
-      return null;
+      return null
     }
 
     // 如果参数继承Model
     if (options.params instanceof Model) {
-      return classToPlain(options.params);
+      return classToPlain(options.params)
     }
 
     if (options.page) {
-      Object.assign(options.params, this.getPageParams(options.page));
+      Object.assign(options.params, this.getPageParams(options.page))
     }
 
-    return options.params;
+    return options.params
   }
 
   private getPageParams(page: PageService) {
     return {
       pageIndex: page.pageIndex,
       pageSize: page.pageSize
-    };
+    }
   }
 
   /**
@@ -117,7 +118,7 @@ export class NetService {
    */
   private generateRequestHeader(options): HttpHeaders {
     // TODO:自定义header
-    return this.headers;
+    return this.headers
   }
 
   /**
@@ -126,7 +127,7 @@ export class NetService {
    */
   private generateRequestLoading(options): any {
     if (!options || !options.loading) {
-      return;
+      return
     }
   }
 }

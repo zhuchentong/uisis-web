@@ -1,44 +1,134 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc';
-import { SFSchema } from '@delon/form';
-
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { _HttpClient, ModalHelper } from '@delon/theme'
+import { STColumn, STComponent } from '@delon/abc'
+import { SFSchema } from '@delon/form'
+import { OrganizationService } from 'app/services/organization.service'
+import { NzTreeComponent, NzModalService, NzMessageService } from 'ng-zorro-antd'
+import { OrganizationModel } from 'app/model/organization.model'
 @Component({
   selector: 'app-system-organization',
-  templateUrl: './organization.component.html'
+  templateUrl: './organization.component.html',
+  providers: [OrganizationService]
 })
 export class SystemOrganizationComponent implements OnInit {
-  url = `/user`;
-  searchSchema: SFSchema = {
-    properties: {
-      no: {
-        type: 'string',
-        title: '编号'
+  @ViewChild('nzTreeComponent')
+  nzTreeComponent: NzTreeComponent
+
+  @ViewChild('organizationNameInput')
+  organizationNameInput
+
+  public treeData = []
+  public organizationName = ''
+
+  constructor(
+    private messageService: NzMessageService,
+    private organizationService: OrganizationService,
+    private modalService: NzModalService
+  ) {}
+
+  ngOnInit() {
+    this.getOrganizationList()
+  }
+
+  /**
+   * 获取组织列表
+   */
+  public getOrganizationList() {
+    this.organizationService.getAll().subscribe(data => {
+      const generateTree = node => {
+        node.title = node.name
+        node.key = node.id
+        const children = data.filter(x => x.parent && x.parent.id === node.id)
+        if (children && children.length) {
+          node.children = children
+          node.children.forEach(generateTree)
+        } else {
+          node.isLeaf = true
+        }
       }
+
+      const rootList = data.filter(x => !x.parent)
+
+      rootList.forEach(generateTree)
+      this.treeData = [...rootList]
+    })
+  }
+
+  /**
+   * 创建组织
+   */
+  public onCreate() {
+    this.organizationName = ''
+    const node = this.getSelectNode()
+    const organization = new OrganizationModel()
+    organization.parent = node ? node.id : ''
+
+    this.modalService.create({
+      nzTitle: '创建组织',
+      nzContent: this.organizationNameInput,
+      nzOnOk: () => {
+        if (!this.organizationName) {
+          this.messageService.error('请输入组织名称')
+          return false
+        }
+        organization.name = this.organizationName
+        this.organizationService.create(organization).subscribe(() => {
+          this.messageService.success('创建成功')
+          this.getOrganizationList()
+        })
+      }
+    })
+  }
+
+  /**
+   * 修改机构
+   */
+  public onUpdate() {
+    const node = this.getSelectNode()
+    if (node) {
+      this.organizationName = node.name
+      this.modalService.create({
+        nzTitle: '创建组织',
+        nzContent: this.organizationNameInput,
+        nzOnOk: () => {
+          if (!this.organizationName) {
+            this.messageService.error('请输入组织名称')
+            return false
+          }
+          this.organizationService
+            .modify({
+              id: node.id,
+              code: node.code,
+              parent: node.parent.id,
+              name: this.organizationName
+            })
+            .subscribe(() => {
+              this.messageService.success('修改成功')
+              this.getOrganizationList()
+            })
+        }
+      })
     }
-  };
-  @ViewChild('st') st: STComponent;
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
-    {
-      title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ]
+  }
+
+  /**
+   * 删除机构
+   */
+  public onDelete() {
+    const node = this.getSelectNode()
+    if (node) {
+      this.organizationService.delete(node.id).subscribe(() => {
+        this.messageService.success('删除成功')
+        this.getOrganizationList()
+      })
     }
-  ];
+  }
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) {}
-
-  ngOnInit() {}
-
-  add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+  /**
+   * 获取选择节点
+   */
+  private getSelectNode() {
+    const nodes = this.nzTreeComponent.getSelectedNodeList()
+    return nodes.length ? nodes[0].origin : null
   }
 }

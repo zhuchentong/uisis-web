@@ -1,0 +1,12 @@
+export enum CommonState {
+  ENABLED = 'ENABLED',
+  DISABLED = 'DISABLED'
+}
+
+export enum Role {
+  SYS_ADMIN = 'SYS_ADMIN',
+  SECURITY_OFFICER = 'SECURITY_OFFICER',
+  LAB_ADMIN = 'LAB_ADMIN',
+  MANAGER = 'MANAGER',
+  LEADER = 'LEADER'
+}

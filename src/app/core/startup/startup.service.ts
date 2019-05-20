@@ -1,17 +1,20 @@
-import { Injectable, Injector, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { zip } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN } from '@delon/theme';
-import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
-import { ACLService } from '@delon/acl';
-import { TranslateService } from '@ngx-translate/core';
-import { I18NService } from '../i18n/i18n.service';
+import { Injectable, Injector, Inject } from '@angular/core'
+import { Router } from '@angular/router'
+import { HttpClient } from '@angular/common/http'
+import { zip } from 'rxjs'
+import { catchError } from 'rxjs/operators'
+import { MenuService, SettingsService, TitleService, ALAIN_I18N_TOKEN } from '@delon/theme'
+import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth'
+import { ACLService } from '@delon/acl'
+import { TranslateService } from '@ngx-translate/core'
+import { I18NService } from '../i18n/i18n.service'
 
-import { NzIconService } from 'ng-zorro-antd/icon';
-import { ICONS_AUTO } from '../../../style-icons-auto';
-import { ICONS } from '../../../style-icons';
+import { NzIconService } from 'ng-zorro-antd/icon'
+import { ICONS_AUTO } from '../../../style-icons-auto'
+import { ICONS } from '../../../style-icons'
+import { DataDictService } from 'app/services/data-dict.service'
+import { Store } from '@ngxs/store'
+import { UpdateDictAction } from 'app/store/action/dict.action'
 
 /**
  * 用于应用启动时
@@ -29,9 +32,11 @@ export class StartupService {
     private titleService: TitleService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private httpClient: HttpClient,
-    private injector: Injector
+    private injector: Injector,
+    private store: Store,
+    private dataDictService: DataDictService
   ) {
-    iconSrv.addIcon(...ICONS_AUTO, ...ICONS);
+    iconSrv.addIcon(...ICONS_AUTO, ...ICONS)
   }
 
   private viaHttp(resolve: any, reject: any) {
@@ -42,43 +47,43 @@ export class StartupService {
       .pipe(
         // 接收其他拦截器后产生的异常消息
         catchError(([langData, appData]) => {
-          resolve(null);
-          return [langData, appData];
+          resolve(null)
+          return [langData, appData]
         })
       )
       .subscribe(
         ([langData, appData]) => {
           // setting language data
-          this.translate.setTranslation(this.i18n.defaultLang, langData);
-          this.translate.setDefaultLang(this.i18n.defaultLang);
+          this.translate.setTranslation(this.i18n.defaultLang, langData)
+          this.translate.setDefaultLang(this.i18n.defaultLang)
 
           // application data
-          const res: any = appData;
+          const res: any = appData
           // 应用信息：包括站点名、描述、年份
-          this.settingService.setApp(res.app);
+          this.settingService.setApp(res.app)
           // 用户信息：包括姓名、头像、邮箱地址
-          this.settingService.setUser(res.user);
+          this.settingService.setUser(res.user)
           // ACL：设置权限为全量
-          this.aclService.setFull(true);
+          this.aclService.setFull(true)
           // 初始化菜单
-          this.menuService.add(res.menu);
+          this.menuService.add(res.menu)
           // 设置页面标题的后缀
-          this.titleService.suffix = res.app.name;
+          this.titleService.suffix = res.app.name
         },
         () => {},
         () => {
-          resolve(null);
+          resolve(null)
         }
-      );
+      )
   }
 
   private viaMockI18n(resolve: any, reject: any) {
     this.httpClient.get(`assets/tmp/i18n/${this.i18n.defaultLang}.json`).subscribe(langData => {
-      this.translate.setTranslation(this.i18n.defaultLang, langData);
-      this.translate.setDefaultLang(this.i18n.defaultLang);
+      this.translate.setTranslation(this.i18n.defaultLang, langData)
+      this.translate.setDefaultLang(this.i18n.defaultLang)
 
-      this.viaMock(resolve, reject);
-    });
+      this.viaMock(resolve, reject)
+    })
   }
 
   private viaMock(resolve: any, reject: any) {
@@ -92,19 +97,19 @@ export class StartupService {
     const app: any = {
       name: `ng-alain`,
       description: `Ng-zorro admin panel front-end framework`
-    };
+    }
     const user: any = {
       name: 'Admin',
       avatar: './assets/tmp/img/avatar.jpg',
       email: 'cipchk@qq.com',
       token: '123456789'
-    };
+    }
     // 应用信息：包括站点名、描述、年份
-    this.settingService.setApp(app);
+    this.settingService.setApp(app)
     // 用户信息：包括姓名、头像、邮箱地址
-    this.settingService.setUser(user);
+    this.settingService.setUser(user)
     // ACL：设置权限为全量
-    this.aclService.setFull(true);
+    this.aclService.setFull(true)
     // 初始化菜单
     this.menuService.add([
       {
@@ -123,11 +128,11 @@ export class StartupService {
           }
         ]
       }
-    ]);
+    ])
     // 设置页面标题的后缀
-    this.titleService.suffix = app.name;
+    this.titleService.suffix = app.name
 
-    resolve({});
+    resolve({})
   }
 
   load(): Promise<any> {
@@ -135,9 +140,13 @@ export class StartupService {
     // https://github.com/angular/angular/issues/15088
     return new Promise((resolve, reject) => {
       // http
-      this.viaHttp(resolve, reject);
+      this.viaHttp(resolve, reject)
       // mock：请勿在生产环境中这么使用，viaMock 单纯只是为了模拟一些数据使脚手架一开始能正常运行
       // this.viaMockI18n(resolve, reject);
-    });
+      // 更新字典数据
+      this.dataDictService.getAll().subscribe(dict => {
+        this.store.dispatch(new UpdateDictAction(dict))
+      })
+    })
   }
 }

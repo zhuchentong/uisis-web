@@ -1,44 +1,89 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc';
-import { SFSchema } from '@delon/form';
-
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { _HttpClient, ModalHelper } from '@delon/theme'
+import { STColumn, STComponent } from '@delon/abc'
+import { SFSchema, FormProperty, PropertyGroup, SFComponent } from '@delon/form'
+import { OperatorService } from 'app/services/operator.service'
+import { PageService } from '@core/http'
+import { DictPipe } from '@shared/pipes/dict.pipe'
+import { NzModalService, NzMessageService } from 'ng-zorro-antd'
 @Component({
   selector: 'app-system-user',
-  templateUrl: './user.component.html'
+  templateUrl: './user.component.html',
+  providers: [OperatorService, PageService, DictPipe]
 })
 export class SystemUserComponent implements OnInit {
-  url = `/user`;
-  searchSchema: SFSchema = {
+  public userDataSet
+  @ViewChild('st') st: STComponent
+  @ViewChild('sf') sf: SFComponent
+  @ViewChild('addUserComponent') addUserComponent
+
+  public schema: SFSchema = {
     properties: {
-      no: {
+      username: {
         type: 'string',
-        title: '编号'
+        title: '用户名',
+        minLength: 3
+      },
+      realName: {
+        type: 'string',
+        title: '姓名',
+        minLength: 3
       }
     }
-  };
-  @ViewChild('st') st: STComponent;
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
+  }
+
+  public columns: STColumn[] = [
+    { title: '用户名', index: 'username' },
+    { title: '姓名', index: 'realName' },
+    { title: '状态', index: 'state', format: x => this.dictPipe.transform(x.state) },
     {
-      title: '',
+      title: '操作',
       buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
+        // { text: '修改姓名', type: 'static', component: FormEditComponent, click: 'reload' },
+        // { text: '修改状态', type: 'static', component: FormEditComponent, click: 'reload' },
       ]
     }
-  ];
+  ]
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) {}
+  constructor(
+    private dictPipe: DictPipe,
+    private operatorService: OperatorService,
+    private modalService: NzModalService,
+    private pageService: PageService,
+    private messageService: NzMessageService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getUserList()
+  }
 
-  add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+  /**
+   * 获取用户列表
+   */
+  public getUserList() {
+    this.operatorService.getOperators(this.pageService).subscribe(data => {
+      this.userDataSet = data
+    })
+  }
+
+  /**
+   * 创建用户
+   */
+  public onCreate() {
+    this.modalService.create({
+      nzTitle: '创建用户',
+      nzContent: this.addUserComponent,
+      nzOnOk: () => {
+        if (!this.sf.valid) {
+          this.messageService.error('请确认输入信息正确')
+          return false
+        }
+
+        this.operatorService.createOperator(this.sf.value).subscribe(() => {
+          this.getUserList()
+          this.messageService.error('用户创建成功')
+        })
+      }
+    })
   }
 }

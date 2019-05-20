@@ -1,9 +1,14 @@
 <page-header [action]="phActionTpl">
   <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
+    <button (click)="onCreate()" nz-button nzType="primary">新建</button>
   </ng-template>
 </page-header>
 <nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
+  <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf> -->
+  <st #st [data]="userDataSet" [columns]="columns"></st>
 </nz-card>
+
+<ng-template #addUserComponent>
+    <sf #sf layout="horizontal" [button]="null" [schema]="schema"></sf>
+</ng-template>
+
