@@ -19,9 +19,44 @@
           "icon": "anticon-bulb",
           "children": [
             {
+              "text": "学校组织机构管理",
+              "link": "/system/organization"
+            },
+            {
+              "text": "系统用户管理",
+              "link": "/system/user"
+            },
+            {
+              "text": "安全体系管理",
+              "link": "/system/security"
+            },
+            {
+              "text": "学期设置",
+              "link": "/system/term"
+            }
+          ]
+        },
+        {
+          "text": "流程管理",
+          "icon": "anticon-bulb",
+          "children": [
+            {
+              "text": "安全检查流程",
+              "link": "/style/typography"
+            },
+            {
+              "text": "安全事故流程",
+              "link": "/style/gridmasonry"
+            }
+          ]
+        },
+        {
+          "text": "实验室管理",
+          "icon": "anticon-bulb",
+          "children": [
+            {
               "text": "实验室管理",
-              "link": "/style/typography",
-              "shortcut": true
+              "link": "/style/typography"
             },
             {
               "text": "二维码管理",
