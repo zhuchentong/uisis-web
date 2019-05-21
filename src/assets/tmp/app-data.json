@@ -149,7 +149,7 @@
         "icon": "anticon-user",
         "children": [{
             "text": "设备管理",
-            "link": "/style/typography",
+            "link": "/equip/equipment",
             "shortcut": true
           },
           {
