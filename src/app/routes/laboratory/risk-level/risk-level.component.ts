@@ -7,6 +7,7 @@ import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 import { plainToClass } from 'class-transformer'
 import { LaboratoryRiskLevelService } from 'app/services/laboratory-risk-level.service'
 import { LaboratoryRiskLevelModel } from 'app/model/laboratory-risk-level.model'
+import { Model } from 'app/model'
 
 @Component({
   selector: 'app-laboratory-risk-level',
@@ -20,34 +21,36 @@ export class LaboratoryRiskLevelComponent implements OnInit {
 
   @ViewChild('sf') sf: SFComponent
 
-  @ViewChild('laboratoryRiskLevelFormComponent') laboratoryRiskLevelFormComponent: any
+  @ViewChild('riskLevelFormComponent') riskLevelFormComponent: any
 
   public schema: SFSchema = {
     properties: {
       name: {
         type: 'string',
-        title: '名称',
-        minLength: 3
+        title: '名称'
       },
       description: {
         type: 'string',
-        title: '描述',
-        minLength: 3
+        title: '描述'
       }
-    }
+    },
+    required: ['name', 'description']
   }
+
   public columns: STColumn[] = [
     { title: '等级名称', index: 'name', width: 100 },
     { title: '每月检查次数', index: 'monthCheckTimes', width: 100 },
     { title: '每月自查次数', index: 'monthSelfCheckTimes', width: 100 },
     { title: '每天自查', index: 'selfCheckEveryDay', width: 100, type: 'yn' },
-
-    { title: '等级说明', index: 'description', width: 200 },
+    { title: '等级说明', index: 'description', render: 'description' },
     {
       title: '操作',
       width: 100,
       fixed: 'right',
-      buttons: [{ text: '修改', type: 'modal', click: x => this.modify(x) }]
+      buttons: [
+        { text: '修改', type: 'modal', click: x => this.modify(x) },
+        { text: '删除', type: 'modal', click: x => this.delete(x) }
+      ]
     }
   ]
 
@@ -63,18 +66,23 @@ export class LaboratoryRiskLevelComponent implements OnInit {
     this.query()
   }
 
+  /**
+   * 查询操作
+   */
   public query() {
     this.laboratoryRiskLevelService.query(this.pageService).subscribe(data => {
       this.dataSet = data
-      console.log(data)
     })
   }
 
+  /**
+   * 创建操作
+   */
   public create() {
-    this.formData = {}
+    this.formData = new LaboratoryRiskLevelModel()
     this.modalService.create({
       nzTitle: '创建实验室安全等级',
-      nzContent: this.laboratoryRiskLevelFormComponent,
+      nzContent: this.riskLevelFormComponent,
       nzOnOk: () => {
         if (!this.sf.valid) {
           this.messageService.error('请确认输入信息正确')
@@ -83,27 +91,47 @@ export class LaboratoryRiskLevelComponent implements OnInit {
 
         this.laboratoryRiskLevelService.create(this.sf.value).subscribe(() => {
           this.query()
-          this.messageService.error('创建成功')
+          this.messageService.success('创建成功')
         })
       }
     })
   }
 
+  /**
+   * 修改操作
+   */
   public modify(data) {
     this.formData = data
     this.modalService.create({
       nzTitle: '编辑实验室分类',
-      nzContent: this.laboratoryRiskLevelFormComponent,
+      nzContent: this.riskLevelFormComponent,
       nzOnOk: () => {
         if (!this.sf.valid) {
           this.messageService.error('请确认输入信息正确')
           return false
         }
-        const model = plainToClass(LaboratoryRiskLevelModel, this.sf.value)
+        const model = Model.from(LaboratoryRiskLevelModel, this.sf.value)
         // 获取参数
         this.laboratoryRiskLevelService.modify(model).subscribe(() => {
           this.query()
-          this.messageService.error('编辑提交成功')
+          this.messageService.success('更新成功')
+        })
+      }
+    })
+  }
+
+  /**
+   * 删除操作
+   */
+  public delete(data) {
+    this.modalService.confirm({
+      nzTitle: '<i>操作确认</i>',
+      nzContent: '<b>是否确认删除该条数据?</b>',
+      nzOkType: 'danger',
+      nzOnOk: () => {
+        this.laboratoryRiskLevelService.delete(data.id).subscribe(() => {
+          this.query()
+          this.messageService.success('删除成功')
         })
       }
     })
