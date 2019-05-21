@@ -28,7 +28,8 @@ const routes: Routes = [
       { path: 'app', loadChildren: './app/app.module#AppModule' },
       { path: 'equip', loadChildren: './equip/equip.module#EquipModule' },
       { path: 'system', loadChildren: './system/system.module#SystemModule' },
-      { path: 'laboratory', loadChildren: './laboratory/laboratory.module#LaboratoryModule' }
+      { path: 'laboratory', loadChildren: './laboratory/laboratory.module#LaboratoryModule' },
+      { path: 'check', loadChildren: './check/check.module#CheckModule' }
 
       // 业务子模块
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WidgetsModule' }

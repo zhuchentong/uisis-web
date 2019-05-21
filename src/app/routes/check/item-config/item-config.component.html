@@ -1,0 +1,47 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <!-- <button (click)="onCreate()" nz-button nzType="primary">新建</button>
+    <button (click)="onUpdate()" nz-button nzType="primary">修改</button>
+    <button (click)="onDelete()" nz-button nzType="primary">删除</button> -->
+  </ng-template>
+</page-header>
+
+<div nz-row nzGutter="32">
+  <nz-col nzXs="8">
+    <nz-card nzTitle="检查类型" [nzExtra]="treeExtraTemplate">
+      <ng-template #treeExtraTemplate>
+        <i class="px-sm" nz-icon nzType="plus" nzTheme="outline" (click)="onCreate('PATH')"></i>
+        <i class="px-sm" nz-icon nzType="edit" nzTheme="outline" (click)="onModify('PATH')"></i>
+        <i
+          class="px-sm"
+          nz-icon
+          nzType="delete"
+          nzTheme="outline"
+          nz-popconfirm
+          nzTitle="确认删除吗?"
+          (nzOnConfirm)="onDelete('PATH')"
+        ></i>
+      </ng-template>
+      <nz-tree #nzTreeComponent [nzData]="treeData" (nzClick)="onSelectNode($event)"> </nz-tree>
+    </nz-card>
+  </nz-col>
+  <nz-col nzXs="16">
+    <nz-card [nzExtra]="tableExtraTemplate">
+      <ng-template #tableExtraTemplate>
+        <a [hidden]="!selectedCheckPath" (click)="onCreate('ITEM')">添加检查项</a>
+      </ng-template>
+      <st #st [data]="checkItemDataSet" [columns]="columns">
+        <ng-template st-row="item-point" let-item>
+          <ellipsis length="20" tooltip>{{ item.itemPoint }}</ellipsis>
+        </ng-template>
+        <ng-template st-row="item-title" let-item>
+          <ellipsis lines="1" tooltip>{{ item.itemTitle }}</ellipsis>
+        </ng-template>
+      </st>
+    </nz-card>
+  </nz-col>
+</div>
+
+<ng-template #checkItemFormComponent>
+  <sf #sf [button]="null" [schema]="schema" [formData]="formData"></sf>
+</ng-template>
