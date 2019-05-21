@@ -96,7 +96,7 @@ export class NetService {
 
     // 如果参数继承Model
     if (options.params instanceof Model) {
-      return classToPlain(options.params)
+      return classToPlain(options.params, { excludeExtraneousValues: true })
     }
 
     if (options.page) {

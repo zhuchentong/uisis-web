@@ -6,6 +6,8 @@ import { AppverService } from 'app/services/appver.service'
 import { PageService } from '@core/http'
 import { DictPipe } from '@shared/pipes/dict.pipe'
 import { NzModalService, NzMessageService } from 'ng-zorro-antd'
+import { plainToClass } from 'class-transformer'
+import { AppverModel } from 'app/model/appver.model'
 
 @Component({
   selector: 'app-app-appver',
@@ -14,9 +16,12 @@ import { NzModalService, NzMessageService } from 'ng-zorro-antd'
 })
 export class AppAppverComponent implements OnInit {
   public appverDataSet
+  public formData = {}
   @ViewChild('st') st: STComponent
+
   @ViewChild('sf') sf: SFComponent
-  @ViewChild('addAppverComponent') addAppverComponent
+
+  @ViewChild('appverFormComponent') appverFormComponent
 
   public schema: SFSchema = {
     properties: {
@@ -45,7 +50,7 @@ export class AppAppverComponent implements OnInit {
     {
       title: '操作',
       buttons: [
-        // { text: '修改', type: 'static', component: AddAppverComponent, click: 'reload' },
+        { text: '修改', type: 'modal', click: x => this.onUpdate(x) }
         // { text: '删除', type: 'static', component: AddAppverComponent, click: 'reload' }
       ]
     }
@@ -68,8 +73,8 @@ export class AppAppverComponent implements OnInit {
    */
   public getAppverList() {
     this.appverService.getAppvers(this.pageService).subscribe(data => {
-      console.log(2222, data)
       this.appverDataSet = data
+      console.log(data)
     })
   }
 
@@ -77,9 +82,10 @@ export class AppAppverComponent implements OnInit {
    * 创建App版本
    */
   public onCreate() {
+    this.formData = {}
     this.modalService.create({
       nzTitle: '创建APP版本',
-      nzContent: this.addAppverComponent,
+      nzContent: this.appverFormComponent,
       nzOnOk: () => {
         if (!this.sf.valid) {
           this.messageService.error('请确认输入信息正确')
@@ -89,6 +95,29 @@ export class AppAppverComponent implements OnInit {
         this.appverService.createAppver(this.sf.value).subscribe(() => {
           this.getAppverList()
           this.messageService.error('用户App版本成功')
+        })
+      }
+    })
+  }
+
+  /**
+   * 更新App版本信息
+   */
+  public onUpdate(data) {
+    this.formData = data
+    this.modalService.create({
+      nzTitle: '修改APP版本',
+      nzContent: this.appverFormComponent,
+      nzOnOk: () => {
+        if (!this.sf.valid) {
+          this.messageService.error('请确认输入信息正确')
+          return false
+        }
+        const model = plainToClass(AppverModel, this.sf.value)
+        // 获取参数
+        this.appverService.updateAppver(model).subscribe(() => {
+          this.getAppverList()
+          this.messageService.error('更新App版本信息成功')
         })
       }
     })
