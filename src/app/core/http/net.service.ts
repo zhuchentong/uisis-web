@@ -107,10 +107,7 @@ export class NetService {
   }
 
   private getPageParams(page: PageService) {
-    return {
-      pageIndex: page.pageIndex,
-      pageSize: page.pageSize
-    }
+    return page.getConfig()
   }
 
   /**

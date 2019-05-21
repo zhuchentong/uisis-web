@@ -29,4 +29,11 @@ export class EquipmentService {
       params
     })
   }
+
+  public deleteEquipment(id): Observable<any> {
+    return this.net.send({
+      service: equipmentController.deleteEquipment,
+      append: [id]
+    })
+  }
 }

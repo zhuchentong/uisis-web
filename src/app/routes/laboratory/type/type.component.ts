@@ -7,6 +7,7 @@ import { NzMessageService, NzModalService } from 'ng-zorro-antd'
 import { plainToClass } from 'class-transformer'
 import { LaboratoryTypeService } from 'app/services/laboratory-type.service'
 import { LaboratoryTypeModel } from 'app/model/laboratory-type.model'
+import { Model } from 'app/model'
 
 @Component({
   selector: 'app-laboratory-type',
@@ -20,7 +21,7 @@ export class LaboratoryTypeComponent implements OnInit {
 
   @ViewChild('sf') sf: SFComponent
 
-  @ViewChild('laboratoryTypeFormComponent') laboratoryTypeFormComponent: any
+  @ViewChild('typeFormComponent') typeFormComponent
 
   public schema: SFSchema = {
     properties: {
@@ -32,18 +33,27 @@ export class LaboratoryTypeComponent implements OnInit {
       description: {
         type: 'string',
         title: '描述',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 3, maxRows: 6 }
+        },
         minLength: 3
       }
-    }
+    },
+    required: ['name', 'description']
   }
+
   public columns: STColumn[] = [
     { title: '名称', index: 'name', width: 100 },
-    { title: '描述', index: 'description', width: 200 },
+    { title: '描述', render: 'description' },
     {
       title: '操作',
       width: 100,
       fixed: 'right',
-      buttons: [{ text: '修改', type: 'modal', click: x => this.modify(x) }]
+      buttons: [
+        { text: '修改', type: 'modal', click: x => this.modify(x) },
+        { text: '删除', type: 'modal', click: x => this.delete(x) }
+      ]
     }
   ]
 
@@ -62,7 +72,6 @@ export class LaboratoryTypeComponent implements OnInit {
   public query() {
     this.laboratoryTypeService.query(this.pageService).subscribe(data => {
       this.laboratoryTypeDataSet = data
-      console.log(data)
     })
   }
 
@@ -70,7 +79,7 @@ export class LaboratoryTypeComponent implements OnInit {
     this.formData = {}
     this.modalService.create({
       nzTitle: '创建实验室分类',
-      nzContent: this.laboratoryTypeFormComponent,
+      nzContent: this.typeFormComponent,
       nzOnOk: () => {
         if (!this.sf.valid) {
           this.messageService.error('请确认输入信息正确')
@@ -79,7 +88,7 @@ export class LaboratoryTypeComponent implements OnInit {
 
         this.laboratoryTypeService.create(this.sf.value).subscribe(() => {
           this.query()
-          this.messageService.error('创建成功')
+          this.messageService.success('创建成功')
         })
       }
     })
@@ -89,17 +98,32 @@ export class LaboratoryTypeComponent implements OnInit {
     this.formData = data
     this.modalService.create({
       nzTitle: '编辑实验室分类',
-      nzContent: this.laboratoryTypeFormComponent,
+      nzContent: this.typeFormComponent,
       nzOnOk: () => {
         if (!this.sf.valid) {
           this.messageService.error('请确认输入信息正确')
           return false
         }
-        const model = plainToClass(LaboratoryTypeModel, this.sf.value)
+        // 获取类型实体
+        const model = Model.from(LaboratoryTypeModel, this.sf.value)
         // 获取参数
         this.laboratoryTypeService.modify(model).subscribe(() => {
           this.query()
-          this.messageService.error('编辑提交成功')
+          this.messageService.success('更新成功')
+        })
+      }
+    })
+  }
+
+  public delete(data) {
+    this.modalService.confirm({
+      nzTitle: '<i>操作确认</i>',
+      nzContent: '<b>是否确认删除该条数据?</b>',
+      nzOkType: 'danger',
+      nzOnOk: () => {
+        this.laboratoryTypeService.delete(data.id).subscribe(() => {
+          this.messageService.success('删除成功')
+          this.query()
         })
       }
     })

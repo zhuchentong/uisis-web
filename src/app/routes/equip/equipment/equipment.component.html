@@ -4,11 +4,9 @@
   </ng-template>
 </page-header>
 <nz-card>
-  <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf> -->
   <st #st [data]="equipmentDataSet" [columns]="columns"></st>
 </nz-card>
 
-
 <ng-template #equipmentFormComponent>
-  <sf #sf layout="horizontal" [button]="null" [schema]="schema" [formData]="formData"></sf>
+  <sf #sf [button]="null" [schema]="schema" [formData]="formData"></sf>
 </ng-template>

@@ -15,5 +15,10 @@ export const equipmentController = {
     controller,
     action: 'modify',
     method: 'POST'
+  },
+  deleteEquipment: {
+    controller,
+    action: 'delete',
+    method: 'DELETE'
   }
 }

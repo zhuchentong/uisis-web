@@ -26,7 +26,8 @@ export class LaboratoryTypeService {
   public modify(params): Observable<any> {
     return this.net.send({
       service: laboratoryTypeController.modify,
-      params
+      params,
+      model: LaboratoryTypeModel
     })
   }
 

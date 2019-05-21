@@ -4,10 +4,13 @@
   </ng-template>
 </page-header>
 <nz-card>
-  <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf> -->
-  <st #st [data]="laboratoryTypeDataSet" [columns]="columns"></st>
+  <st #st [page]="false" [data]="laboratoryTypeDataSet" [columns]="columns">
+    <ng-template st-row="description" let-item>
+      <ellipsis lines="1" tooltip>{{ item.description }}</ellipsis>
+    </ng-template>
+  </st>
 </nz-card>
 
-<ng-template #appverFormComponent>
-  <sf #sf layout="horizontal" [button]="null" [schema]="schema" [formData]="formData"></sf>
+<ng-template #typeFormComponent>
+  <sf #sf [button]="null" [schema]="schema" [formData]="formData"> </sf>
 </ng-template>
