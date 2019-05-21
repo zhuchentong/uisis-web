@@ -19,6 +19,23 @@ export class SystemOrganizationComponent implements OnInit {
 
   public treeData = []
   public organizationName = ''
+  public origanizationDataSet = []
+
+  public columns: STColumn[] = [
+    { title: '序号', type: 'no' },
+    { title: '组织名称', index: 'name' },
+    { title: '创建者', index: 'creator.realName' },
+    { title: '创建事件', index: 'createTime', type: 'date' },
+    {
+      title: '操作',
+      buttons: [
+        // { text: '修改姓名', type: 'static', component: FormEditComponent, click: 'reload' },
+        // { text: '修改状态', type: 'static', component: FormEditComponent, click: 'reload' },
+      ]
+    }
+  ]
+
+  public formData = {}
 
   constructor(
     private messageService: NzMessageService,
@@ -83,8 +100,11 @@ export class SystemOrganizationComponent implements OnInit {
   /**
    * 修改机构
    */
-  public onUpdate() {
-    const node = this.getSelectNode()
+  public onUpdate(node) {
+    if (!node) {
+      node = this.getSelectNode()
+    }
+
     if (node) {
       this.organizationName = node.name
       this.modalService.create({
@@ -114,13 +134,21 @@ export class SystemOrganizationComponent implements OnInit {
   /**
    * 删除机构
    */
-  public onDelete() {
-    const node = this.getSelectNode()
+  public onDelete(node) {
+    if (!node) {
+      node = this.getSelectNode()
+    }
     if (node) {
       this.organizationService.delete(node.id).subscribe(() => {
         this.messageService.success('删除成功')
         this.getOrganizationList()
       })
+    }
+  }
+
+  public onSelectNode({ node }) {
+    if (node.origin) {
+      this.origanizationDataSet = node.origin.children
     }
   }
 

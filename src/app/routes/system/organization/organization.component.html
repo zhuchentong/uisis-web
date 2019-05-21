@@ -7,9 +7,14 @@
 </page-header>
 
 <div nz-row nzGutter="32">
-  <nz-col nzXs="24">
+  <nz-col nzXs="8">
     <nz-card>
-      <nz-tree #nzTreeComponent [nzExpandAll]="true" [nzData]="treeData"> </nz-tree>
+      <nz-tree #nzTreeComponent [nzExpandAll]="true" [nzData]="treeData" (nzClick)="onSelectNode($event)"> </nz-tree>
+    </nz-card>
+  </nz-col>
+  <nz-col nzXs="16">
+    <nz-card>
+      <st #st [data]="origanizationDataSet" [columns]="columns"></st>
     </nz-card>
   </nz-col>
 </div>
