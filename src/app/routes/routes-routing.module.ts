@@ -1,20 +1,20 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { SimpleGuard } from '@delon/auth';
-import { environment } from '@env/environment';
+import { NgModule } from '@angular/core'
+import { Routes, RouterModule } from '@angular/router'
+import { SimpleGuard } from '@delon/auth'
+import { environment } from '@env/environment'
 // layout
-import { LayoutDefaultComponent } from '../layout/default/default.component';
-import { LayoutFullScreenComponent } from '../layout/fullscreen/fullscreen.component';
-import { LayoutPassportComponent } from '../layout/passport/passport.component';
+import { LayoutDefaultComponent } from '../layout/default/default.component'
+import { LayoutFullScreenComponent } from '../layout/fullscreen/fullscreen.component'
+import { LayoutPassportComponent } from '../layout/passport/passport.component'
 // dashboard pages
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component'
 // passport pages
-import { UserLoginComponent } from './passport/login/login.component';
-import { UserRegisterComponent } from './passport/register/register.component';
-import { UserRegisterResultComponent } from './passport/register-result/register-result.component';
+import { UserLoginComponent } from './passport/login/login.component'
+import { UserRegisterComponent } from './passport/register/register.component'
+import { UserRegisterResultComponent } from './passport/register-result/register-result.component'
 // single pages
-import { CallbackComponent } from './callback/callback.component';
-import { UserLockComponent } from './passport/lock/lock.component';
+import { CallbackComponent } from './callback/callback.component'
+import { UserLockComponent } from './passport/lock/lock.component'
 
 const routes: Routes = [
   {
@@ -25,6 +25,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
+      { path: 'app', loadChildren: './app/app.module#AppModule' },
       { path: 'system', loadChildren: './system/system.module#SystemModule' }
       // 业务子模块
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WidgetsModule' }
@@ -51,7 +52,7 @@ const routes: Routes = [
   // 单页不包裹Layout
   { path: 'callback/:type', component: CallbackComponent },
   { path: '**', redirectTo: 'exception/404' }
-];
+]
 
 @NgModule({
   imports: [

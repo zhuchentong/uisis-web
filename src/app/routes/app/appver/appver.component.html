@@ -1,0 +1,13 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button (click)="onCreate()" nz-button nzType="primary">新建</button>
+  </ng-template>
+</page-header>
+<nz-card>
+  <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf> -->
+  <st #st [data]="appverDataSet" [columns]="columns"></st>
+</nz-card>
+
+<ng-template #addAppverComponent>
+  <sf #sf layout="horizontal" [button]="null" [schema]="schema"></sf>
+</ng-template>
