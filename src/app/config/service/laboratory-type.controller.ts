@@ -1,4 +1,4 @@
-const controller = 'laboratoryType'
+const controller = 'laboratoryTypeController'
 
 export const laboratoryTypeController = {
   create: {

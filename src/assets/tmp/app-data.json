@@ -22,14 +22,6 @@
           {
             "text": "系统用户管理",
             "link": "/system/user"
-          },
-          {
-            "text": "安全体系管理",
-            "link": "/system/security"
-          },
-          {
-            "text": "学期设置",
-            "link": "/system/term"
           }
         ]
       },
@@ -59,7 +51,7 @@
           },
           {
             "text": "实验室分类管理",
-            "link": "/style/colors"
+            "link": "/laboratory/type"
           },
           {
             "text": "实验室安全管理",

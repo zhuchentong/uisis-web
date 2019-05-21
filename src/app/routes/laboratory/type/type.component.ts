@@ -1,44 +1,107 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { _HttpClient, ModalHelper } from '@delon/theme'
 import { STColumn, STComponent } from '@delon/abc'
-import { SFSchema } from '@delon/form'
+import { SFComponent, SFSchema } from '@delon/form'
+import { PageService } from '@core/http'
+import { DictPipe } from '@shared/pipes/dict.pipe'
+import { NzMessageService, NzModalService } from 'ng-zorro-antd'
+import { plainToClass } from 'class-transformer'
+import { LaboratoryTypeService } from 'app/services/laboratory-type.service'
+import { LaboratoryTypeModel } from 'app/model/laboratory-type.model'
 
 @Component({
   selector: 'app-laboratory-type',
-  templateUrl: './type.component.html'
+  templateUrl: './type.component.html',
+  providers: [LaboratoryTypeService, PageService, DictPipe]
 })
 export class LaboratoryTypeComponent implements OnInit {
-  url = `/user`
-  searchSchema: SFSchema = {
+  public laboratoryTypeDataSet: any
+  public formData = {}
+  @ViewChild('st') st: STComponent
+
+  @ViewChild('sf') sf: SFComponent
+
+  @ViewChild('laboratoryTypeFormComponent') laboratoryTypeFormComponent: any
+
+  public schema: SFSchema = {
     properties: {
-      no: {
+      name: {
         type: 'string',
-        title: '编号'
+        title: '名称',
+        minLength: 3
+      },
+      description: {
+        type: 'string',
+        title: '描述',
+        minLength: 3
       }
     }
   }
-  @ViewChild('st') st: STComponent
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
+  public columns: STColumn[] = [
+    { title: '名称', index: 'name', width: 100 },
+    { title: '描述', index: 'description', width: 200 },
     {
-      title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ]
+      title: '操作',
+      width: 100,
+      fixed: 'right',
+      buttons: [{ text: '修改', type: 'modal', click: x => this.modify(x) }]
     }
   ]
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) {}
+  constructor(
+    private dictPipe: DictPipe,
+    private laboratoryTypeService: LaboratoryTypeService,
+    private modalService: NzModalService,
+    private pageService: PageService,
+    private messageService: NzMessageService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.query()
+  }
 
-  add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+  public query() {
+    this.laboratoryTypeService.query(this.pageService).subscribe(data => {
+      this.laboratoryTypeDataSet = data
+      console.log(data)
+    })
+  }
+
+  public create() {
+    this.formData = {}
+    this.modalService.create({
+      nzTitle: '创建实验室分类',
+      nzContent: this.laboratoryTypeFormComponent,
+      nzOnOk: () => {
+        if (!this.sf.valid) {
+          this.messageService.error('请确认输入信息正确')
+          return false
+        }
+
+        this.laboratoryTypeService.create(this.sf.value).subscribe(() => {
+          this.query()
+          this.messageService.error('创建成功')
+        })
+      }
+    })
+  }
+
+  public modify(data) {
+    this.formData = data
+    this.modalService.create({
+      nzTitle: '编辑实验室分类',
+      nzContent: this.laboratoryTypeFormComponent,
+      nzOnOk: () => {
+        if (!this.sf.valid) {
+          this.messageService.error('请确认输入信息正确')
+          return false
+        }
+        const model = plainToClass(LaboratoryTypeModel, this.sf.value)
+        // 获取参数
+        this.laboratoryTypeService.modify(model).subscribe(() => {
+          this.query()
+          this.messageService.error('编辑提交成功')
+        })
+      }
+    })
   }
 }

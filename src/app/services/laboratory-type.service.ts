@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core'
 import { LaboratoryTypeModel } from 'app/model/laboratory-type.model'
 
 @Injectable()
-export class OperatorService {
+export class LaboratoryTypeService {
   constructor(private net: NetService) {}
 
   public create(params): Observable<any> {
