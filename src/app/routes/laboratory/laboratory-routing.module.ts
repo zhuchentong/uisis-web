@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 import { LaboratoryTypeComponent } from './type/type.component'
+import { LaboratoryRiskLevelComponent } from './risk-level/risk-level.component'
 
-const routes: Routes = [{ path: 'type', component: LaboratoryTypeComponent }]
+const routes: Routes = [
+  { path: 'type', component: LaboratoryTypeComponent },
+  { path: 'risk-level', component: LaboratoryRiskLevelComponent }
+]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

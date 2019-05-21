@@ -54,8 +54,8 @@
             "link": "/laboratory/type"
           },
           {
-            "text": "实验室安全管理",
-            "link": "/style/colors"
+            "text": "实验室安全等级管理",
+            "link": "/laboratory/risk-level"
           }
         ]
       },
