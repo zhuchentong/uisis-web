@@ -1,0 +1,15 @@
+<nz-card nzTitle="上传文件" [nzExtra]="extra">
+  <nz-upload #upload nzType="drag" [nzMultiple]="true" [nzLimit]="2" [nzAction]="uploadAction"
+    (nzChange)="handleChange($event)">
+    <p class="ant-upload-drag-icon">
+      <i nz-icon nzType="inbox"></i>
+    </p>
+    <p class="ant-upload-text">请选择需要上传参的文件</p>
+    <p class="ant-upload-hint">`
+
+    </p>
+  </nz-upload>
+  <ng-template #extra>
+    <a (click)="submit()">提交</a>
+  </ng-template>
+</nz-card>

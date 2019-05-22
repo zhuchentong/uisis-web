@@ -15,9 +15,10 @@ export class LaboratoryService {
     })
   }
 
-  public query(page): Observable<LaboratoryModel> {
+  public query(params, { page }): Observable<LaboratoryModel> {
     return this.net.send({
       service: laboratoryController.query,
+      params,
       page,
       model: LaboratoryModel
     })
@@ -47,6 +48,13 @@ export class LaboratoryService {
   public getAll(): Observable<any> {
     return this.net.send({
       service: laboratoryController.getAll
+    })
+  }
+
+  public findByOrg(id): Observable<any> {
+    return this.net.send({
+      service: laboratoryController.findByOrg,
+      append: [id]
     })
   }
 }

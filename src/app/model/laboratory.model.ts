@@ -35,5 +35,6 @@ export class LaboratoryModel extends Model {
   public lastCheckDate: Date
 
   @Expose()
+  @Type(() => UserModel)
   public managers: UserModel[]
 }

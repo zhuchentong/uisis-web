@@ -26,6 +26,11 @@ export const laboratoryController = {
     action: 'findById',
     method: 'GET'
   },
+  findByOrg: {
+    controller,
+    action: 'findByOrg',
+    method: 'GET'
+  },
   getAll: {
     controller,
     action: 'getAll',

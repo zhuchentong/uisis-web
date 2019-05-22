@@ -121,9 +121,18 @@ export class LaboratoryManagementComponent implements OnInit {
    * 获取节点选择项
    */
   public getLaboratory() {
-    this.laboratoryService.query(this.pageService).subscribe(data => {
-      this.dataSet = data
-    })
+    this.laboratoryService
+      .query(
+        {
+          organization: this.selectedCheckPath.id
+        },
+        {
+          page: this.pageService
+        }
+      )
+      .subscribe(data => {
+        this.dataSet = data
+      })
   }
 
   /**

@@ -1,5 +1,6 @@
 import { Model } from '.'
-import { Type, Expose } from 'class-transformer'
+import { Type, Expose, Transform } from 'class-transformer'
+import { LaboratoryModel } from './laboratory.model'
 
 export class EquipmentModel extends Model {
   @Expose()
@@ -13,4 +14,8 @@ export class EquipmentModel extends Model {
 
   @Expose()
   public model: string
+
+  @Expose()
+  @Transform(value => value && value.id, { toPlainOnly: true })
+  public laboratory: LaboratoryModel
 }

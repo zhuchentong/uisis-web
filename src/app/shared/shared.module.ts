@@ -14,11 +14,12 @@ import { TranslateModule } from '@ngx-translate/core'
 import { NgZorroAntdModule } from 'ng-zorro-antd'
 import { CountdownModule } from 'ngx-countdown'
 import { DictPipe } from './pipes/dict.pipe'
+import { UploadComponent } from './components/upload/upload.component'
 const THIRDMODULES = [NgZorroAntdModule, CountdownModule]
 // #endregion
 
 // #region your componets & directives
-const COMPONENTS = []
+const COMPONENTS = [UploadComponent]
 const DIRECTIVES = []
 const PIPES = [DictPipe]
 // #endregion
@@ -42,6 +43,7 @@ const PIPES = [DictPipe]
     ...DIRECTIVES,
     ...PIPES
   ],
+  entryComponents: [...COMPONENTS],
   exports: [
     CommonModule,
     FormsModule,
