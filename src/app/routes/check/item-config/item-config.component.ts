@@ -114,7 +114,7 @@ export class CheckItemConfigComponent implements OnInit {
   public getCheckPath() {
     this.checkItemConfigService.getAll().subscribe(data => {
       const generateTree = node => {
-        node.title = node.itemTitle
+        node.title = node.itemNumber + ' ' + node.itemTitle
         node.key = node.id
         const children = data.filter(x => x.type === 'PATH').filter(x => x.parentId && x.parentId === node.id)
         if (children && children.length) {
