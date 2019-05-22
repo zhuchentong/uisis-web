@@ -27,11 +27,37 @@ export class LaboratoryRiskLevelComponent implements OnInit {
     properties: {
       name: {
         type: 'string',
-        title: '名称'
+        title: '等级名称'
+      },
+      monthCheckTimes: {
+        type: 'integer',
+        title: '每月检查次数',
+        maximum: 30,
+        minimum: 0
+      },
+      monthSelfCheckTimes: {
+        type: 'integer',
+        title: '每月自查次数',
+        maximum: 30,
+        minimum: 0
+      },
+      selfCheckEveryDay: {
+        type: 'boolean',
+        title: '每天自查'
+      },
+      reminderDays: {
+        type: 'integer',
+        title: '提前提醒天数',
+        maximum: 30,
+        minimum: 0
       },
       description: {
         type: 'string',
-        title: '描述'
+        title: '等级说明',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 3, maxRows: 6 }
+        }
       }
     },
     required: ['name', 'description']
