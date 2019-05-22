@@ -10,3 +10,17 @@ export enum Role {
   MANAGER = 'MANAGER',
   LEADER = 'LEADER'
 }
+
+export enum CheckTypes {}
+
+export enum DictType {
+  CertificateType = 'CertificateType',
+  CheckItemType = 'CheckItemType',
+  CheckRecordState = 'CheckRecordState',
+  CheckType = 'CheckType',
+  CommonState = 'CommonState',
+  DocumentType = 'DocumentType',
+  Gender = 'Gender',
+  MessageType = 'MessageType',
+  Role = 'Role'
+}

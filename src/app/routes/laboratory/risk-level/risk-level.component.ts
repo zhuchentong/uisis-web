@@ -8,6 +8,10 @@ import { plainToClass } from 'class-transformer'
 import { LaboratoryRiskLevelService } from 'app/services/laboratory-risk-level.service'
 import { LaboratoryRiskLevelModel } from 'app/model/laboratory-risk-level.model'
 import { Model } from 'app/model'
+import { Store } from '@ngxs/store'
+import { of } from 'rxjs'
+import { DictState } from 'app/store/state/dict.state'
+import { DictType } from 'app/config/enum.config'
 
 @Component({
   selector: 'app-laboratory-risk-level',
@@ -51,6 +55,22 @@ export class LaboratoryRiskLevelComponent implements OnInit {
         maximum: 30,
         minimum: 0
       },
+      checkTypes: {
+        type: 'string',
+        title: '检查类型',
+        ui: {
+          widget: 'checkbox',
+          span: 8,
+          asyncData: () =>
+            of(
+              this.store.selectSnapshot(DictState.getDict(DictType.CheckType)).map(x => ({
+                label: x.name,
+                value: x.code
+              }))
+            ),
+          default: []
+        }
+      },
       description: {
         type: 'string',
         title: '等级说明',
@@ -85,7 +105,8 @@ export class LaboratoryRiskLevelComponent implements OnInit {
     private laboratoryRiskLevelService: LaboratoryRiskLevelService,
     private modalService: NzModalService,
     private pageService: PageService,
-    private messageService: NzMessageService
+    private messageService: NzMessageService,
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -105,7 +126,7 @@ export class LaboratoryRiskLevelComponent implements OnInit {
    * 创建操作
    */
   public create() {
-    this.formData = new LaboratoryRiskLevelModel()
+    this.formData = {}
     this.modalService.create({
       nzTitle: '创建实验室安全等级',
       nzContent: this.riskLevelFormComponent,
@@ -114,8 +135,9 @@ export class LaboratoryRiskLevelComponent implements OnInit {
           this.messageService.error('请确认输入信息正确')
           return false
         }
-
-        this.laboratoryRiskLevelService.create(this.sf.value).subscribe(() => {
+        const model = Model.from(LaboratoryRiskLevelModel, this.sf.value)
+        console.log(this.sf.value)
+        this.laboratoryRiskLevelService.create(model).subscribe(() => {
           this.query()
           this.messageService.success('创建成功')
         })

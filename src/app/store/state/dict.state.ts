@@ -1,6 +1,7 @@
-import { State, Action, StateContext, Selector } from '@ngxs/store'
+import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store'
 import { ExtendState } from 'app/store/extend'
 import { UpdateDictAction } from '../action/dict.action'
+import { DictType } from 'app/config/enum.config'
 
 @State<any>({
   name: 'dict',
@@ -12,12 +13,18 @@ export class DictState extends ExtendState {
    * @param state 字典数据
    */
   @Selector()
-  public static getDict(state) {
-    return state
+  public static getDict(dictType?: DictType) {
+    return createSelector(
+      [DictState],
+      ({ dict }) => {
+        return dictType ? dict[dictType] : dict
+      }
+    )
   }
 
   @Action(UpdateDictAction)
   public updateDict<T>({ setState }: StateContext<any>, { dict }: UpdateDictAction) {
+    console.log(2, dict)
     setState(dict)
   }
 }
