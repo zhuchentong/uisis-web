@@ -36,8 +36,8 @@ export class LaboratoryManagementComponent implements OnInit {
   public columns: STColumn[] = [
     { title: '编号', index: 'code', width: 120, className: 'text-center' },
     { title: '名称', index: 'name', render: 'name', width: '100px' },
+    { title: '类型', index: 'laboratoryType.name', render: 'typeName', width: 120, className: 'text-center' },
     { title: '风险等级', index: 'laboratoryRiskLevel.name', render: 'riskLevelTile' },
-    { title: '风险等级', index: 'laboratoryType.name', render: 'typeName', width: 120, className: 'text-center' },
     {
       title: '操作',
       fixed: 'right',
