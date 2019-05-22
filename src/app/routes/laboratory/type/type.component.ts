@@ -38,9 +38,14 @@ export class LaboratoryTypeComponent implements OnInit {
           autosize: { minRows: 3, maxRows: 6 }
         },
         minLength: 3
+      },
+      sortNo: {
+        type: 'integer',
+        title: '序号',
+        minimum: 1
       }
     },
-    required: ['name', 'description']
+    required: ['name', 'description', 'sortNo']
   }
 
   public columns: STColumn[] = [

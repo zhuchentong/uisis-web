@@ -10,4 +10,7 @@ export class LaboratoryTypeModel extends Model {
 
   @Expose()
   public description: string
+
+  @Expose()
+  public sortNo: number
 }

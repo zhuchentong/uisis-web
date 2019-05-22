@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "dev": "ng serve -c=hmr -o --host 0.0.0.0 --port 4300",
+    "dev": "ng serve -c=hmr -o",
     "start": "npm run color-less && ng serve -o",
     "build": "npm run color-less && ng build --prod --build-optimizer",
     "test": "ng test",

@@ -18,4 +18,6 @@ export class LaboratoryRiskLevelModel extends Model {
   public reminderDays: number
   @Expose()
   public checkTypes: string[]
+  @Expose()
+  public sortNo: number
 }

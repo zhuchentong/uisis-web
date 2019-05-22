@@ -3,8 +3,9 @@ import { SharedModule } from '@shared'
 import { LaboratoryRoutingModule } from './laboratory-routing.module'
 import { LaboratoryTypeComponent } from './type/type.component'
 import { LaboratoryRiskLevelComponent } from './risk-level/risk-level.component'
+import { LaboratoryManagementComponent } from './management/management.component'
 
-const COMPONENTS = [LaboratoryTypeComponent, LaboratoryRiskLevelComponent]
+const COMPONENTS = [LaboratoryTypeComponent, LaboratoryRiskLevelComponent, LaboratoryManagementComponent]
 const COMPONENTS_NOROUNT = []
 
 @NgModule({

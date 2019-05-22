@@ -1,0 +1,30 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+  </ng-template>
+</page-header>
+
+<div nz-row nzGutter="32">
+  <nz-col nzXs="8">
+    <nz-card nzTitle="组织选择" [nzExtra]="treeExtraTemplate">
+      <ng-template #treeExtraTemplate>
+      </ng-template>
+      <nz-tree #nzTreeComponent [nzData]="treeData" (nzClick)="onSelectNode($event)"> </nz-tree>
+    </nz-card>
+  </nz-col>
+  <nz-col nzXs="16">
+    <nz-card [nzExtra]="tableExtraTemplate">
+      <ng-template #tableExtraTemplate>
+        <a [hidden]="!selectedCheckPath" (click)="onCreate('LAB')">添加实验室</a>
+      </ng-template>
+      <st #st [data]="dataSet" [columns]="columns">
+        <ng-template st-row="name" let-item>
+          <ellipsis lines="1" tooltip>{{ item.name }}</ellipsis>
+        </ng-template>
+      </st>
+    </nz-card>
+  </nz-col>
+</div>
+
+<ng-template #checkItemFormComponent>
+  <sf #sf [button]="null" [schema]="schema" [formData]="formData"></sf>
+</ng-template>

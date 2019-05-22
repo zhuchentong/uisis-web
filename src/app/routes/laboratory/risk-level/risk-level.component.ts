@@ -78,9 +78,14 @@ export class LaboratoryRiskLevelComponent implements OnInit {
           widget: 'textarea',
           autosize: { minRows: 3, maxRows: 6 }
         }
+      },
+      sortNo: {
+        type: 'integer',
+        title: '序号',
+        minimum: 1
       }
     },
-    required: ['name', 'description']
+    required: ['name', 'description', 'sortNo']
   }
 
   public columns: STColumn[] = [
