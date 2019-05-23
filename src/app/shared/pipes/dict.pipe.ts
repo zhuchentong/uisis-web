@@ -9,7 +9,7 @@ export class DictPipe implements PipeTransform {
   constructor(private store: Store) {}
 
   public transform(value: any): any {
-    const dict = this.store.selectSnapshot(DictState.getDict)
+    const dict = this.store.selectSnapshot(DictState.getDict())
     if (!dict) {
       return ''
     }

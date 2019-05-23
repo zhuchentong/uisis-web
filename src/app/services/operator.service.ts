@@ -18,16 +18,19 @@ export class OperatorService {
     })
   }
 
-  public createOperator(params): Observable<any> {
+  public createOperator(params): Observable<UserModel> {
     return this.net.send({
       service: operatorController.createOperator,
-      params
+      params,
+      model: UserModel
     })
   }
 
-  public getOperators(page): Observable<UserModel> {
+  public getOperators(params, { page }): Observable<UserModel[]> {
+    console.log(params)
     return this.net.send({
       service: operatorController.getOperators,
+      params,
       page,
       model: UserModel
     })

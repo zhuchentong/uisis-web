@@ -1,7 +1,5 @@
 <page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-
-  </ng-template>
+  <ng-template #phActionTpl> </ng-template>
 </page-header>
 <div nz-row nzGutter="32">
   <nz-col nzXs="8">
@@ -14,12 +12,15 @@
   </nz-col>
   <nz-col nzXs="16">
     <nz-card>
-      <st #st [data]="userDataSet" [columns]="columns"></st>
+      <st #st [data]="userDataSet" [columns]="columns">
+        <ng-template st-row="state" let-item>
+          <a (click)="updateState(item)">{{ item.state | dict }}</a>
+        </ng-template>
+      </st>
     </nz-card>
   </nz-col>
 </div>
 
-
 <ng-template #addUserComponent>
-  <sf #sf layout="horizontal" [button]="null" [schema]="schema"></sf>
+  <sf #sf layout="horizontal" [button]="null" [schema]="schema" [formData]="formData"></sf>
 </ng-template>
