@@ -24,7 +24,6 @@ export class DictState extends ExtendState {
 
   @Action(UpdateDictAction)
   public updateDict<T>({ setState }: StateContext<any>, { dict }: UpdateDictAction) {
-    console.log(2, dict)
     setState(dict)
   }
 }

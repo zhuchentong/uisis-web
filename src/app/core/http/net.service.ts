@@ -42,8 +42,9 @@ export class NetService {
           let body = response.body
           // 更新分页数据
           if (options.page) {
-            const data = response.body as any
-            body = data.content
+            const { content, pageable, totalElements } = response.body as any
+            options.page.update(totalElements)
+            body = content
           }
 
           return options.model ? plainToClass(options.model, body) : body

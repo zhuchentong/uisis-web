@@ -77,7 +77,7 @@ export class SystemUserComponent implements OnInit {
     private dictPipe: DictPipe,
     private operatorService: OperatorService,
     private modalService: NzModalService,
-    private pageService: PageService,
+    public pageService: PageService,
     private messageService: NzMessageService,
     private organizationService: OrganizationService,
     private store: Store
@@ -90,11 +90,11 @@ export class SystemUserComponent implements OnInit {
   /**
    * 获取用户列表
    */
-  public getUserList(id) {
+  public getUserList() {
     this.operatorService
       .getOperators(
         {
-          'organization.id': id
+          'organization.id': this.currentOrganizationId
         },
         {
           page: this.pageService
@@ -130,8 +130,8 @@ export class SystemUserComponent implements OnInit {
 
   public onSelectNode({ node }) {
     if (node.origin) {
-      this.getUserList(node.origin.id)
       this.currentOrganizationId = node.origin.id
+      this.getUserList()
     }
   }
   /**
@@ -153,10 +153,10 @@ export class SystemUserComponent implements OnInit {
         }
 
         const model = Model.from(UserModel, this.sf.value)
-        model.organization = selected.origin.id
+        model.organization = this.currentOrganizationId
         model.state = CommonState.ENABLED
         this.operatorService.createOperator(model).subscribe(() => {
-          this.getUserList(selected.origin.id)
+          this.getUserList()
           this.messageService.success('用户创建成功')
         })
       }
@@ -179,7 +179,7 @@ export class SystemUserComponent implements OnInit {
         const model = Model.from(UserModel, this.sf.value)
         model.organization = this.currentOrganizationId
         this.operatorService.updateOperator(model).subscribe(() => {
-          this.getUserList(this.currentOrganizationId)
+          this.getUserList()
           this.messageService.success('用户修改成功')
         })
       }
@@ -195,8 +195,14 @@ export class SystemUserComponent implements OnInit {
         organization: this.currentOrganizationId
       })
       .subscribe(() => {
-        this.getUserList(this.currentOrganizationId)
+        this.getUserList()
         this.messageService.success('状态修改成功')
       })
+  }
+
+  public change(e) {
+    if (this.pageService.change(e)) {
+      this.getUserList()
+    }
   }
 }

@@ -74,7 +74,6 @@ export class AppAppverComponent implements OnInit {
   public getAppverList() {
     this.appverService.getAppvers(this.pageService).subscribe(data => {
       this.appverDataSet = data
-      console.log(data)
     })
   }
 

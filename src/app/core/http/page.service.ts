@@ -2,8 +2,20 @@ import { Injectable } from '@angular/core'
 
 @Injectable()
 export class PageService {
-  public pageIndex = 1
+  public config = {
+    front: false,
+    zeroIndexed: true,
+    placement: 'right',
+    show: true,
+    showSize: true,
+    pageSizes: [10, 20, 30, 40],
+    showQuickJumper: false,
+    pageIndex: 1,
+    toTop: true
+  }
+
   public total: number
+  public pageIndex = 1
   public pageSize = 10
   public loading: boolean
   public totalPage: number
@@ -15,14 +27,13 @@ export class PageService {
     this.pageSize = 10
     this.loading = false
   }
-
   /**
    * 获取分页配置信息
    */
   public getConfig() {
     return {
-      pageNumber: this.pageIndex - 1,
-      pageSize: this.pageSize
+      page: this.pageIndex - 1,
+      size: this.pageSize
     }
   }
 
@@ -52,6 +63,14 @@ export class PageService {
   private checkComplete() {
     if (this.pageIndex >= this.totalPage) {
       this.complete = true
+    }
+  }
+
+  public change({ type, pi, ps }) {
+    if (['pi', 'ps'].includes(type)) {
+      this.pageIndex = pi
+      this.pageSize = ps
+      return true
     }
   }
 }

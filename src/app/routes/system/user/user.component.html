@@ -12,7 +12,16 @@
   </nz-col>
   <nz-col nzXs="16">
     <nz-card>
-      <st #st [data]="userDataSet" [columns]="columns">
+      <st
+        [pi]="pageService.pageIndex"
+        [ps]="pageService.pageSize"
+        [total]="pageService.total"
+        [page]="pageService.config"
+        #st
+        [data]="userDataSet"
+        [columns]="columns"
+        (change)="change($event)"
+      >
         <ng-template st-row="state" let-item>
           <a (click)="updateState(item)">{{ item.state | dict }}</a>
         </ng-template>
