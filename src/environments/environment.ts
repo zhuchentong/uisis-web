@@ -7,7 +7,7 @@ export const environment = {
   production: false,
   useHash: true,
   hmr: false
-};
+}
 
 /*
  * In development mode, to ignore zone related error stack frames such as
