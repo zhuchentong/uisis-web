@@ -3,35 +3,38 @@
   <nz-col nzXs="6">
     <nz-card nzTitle="开学检查进度">
       <g2-mini-progress percent="78" strokeWidth="8" target="80"></g2-mini-progress>
-      <number-info subTitle="本周完成检查" total="30" subTotal="5" status="down" theme="default"></number-info>
+      <number-info total="30" subTotal="5" status="down" theme="default"></number-info>
 
     </nz-card>
   </nz-col>
   <nz-col nzXs="6">
     <nz-card nzTitle="期中检查进度">
       <g2-mini-progress percent="5" strokeWidth="8" target="80"></g2-mini-progress>
-      <number-info subTitle="本周完成检查" total="0" subTotal="80" status="up" theme="default"></number-info>
+      <number-info total="30" subTotal="0" status="down" theme="default"></number-info>
 
     </nz-card>
   </nz-col>
   <nz-col nzXs="6">
     <nz-card nzTitle="期末检查进度">
       <g2-mini-progress percent="2" strokeWidth="8" target="80"></g2-mini-progress>
-      <number-info subTitle="本周完成检查" total="0" subTotal="80" status="up" theme="default"></number-info>
+      <number-info total="30" subTotal="0" status="down" theme="default"></number-info>
 
     </nz-card>
   </nz-col>
   <nz-col nzXs="6">
     <nz-card nzTitle="本月检查进度">
       <g2-mini-progress percent="88" strokeWidth="8" target="90" color="green"></g2-mini-progress>
-      <number-info subTitle="本周完成检查" total="12" subTotal="5" status="down" theme="default"></number-info>
+      <number-info total="12" subTotal="5" status="down" theme="default"></number-info>
     </nz-card>
   </nz-col>
 </div>
-<div nz-row style="margin-left: -8px; margin-right: -8px;">
-  <nz-card nzTitle="2019年隐患上报数量趋势">
-    <g2-bar height="200" [title]="'2019年隐患上报数量趋势'" [data]="salesData"></g2-bar>
-  </nz-card>
+<div nz-row nzGutter="24" class="ant-row" style="margin-left: -8px; margin-right: -8px;">
+  <nz-col nzXs="24">
+    <nz-card nzTitle="2019年隐患上报数量趋势">
+      <g2-bar height="200" [title]="'2019年隐患上报数量趋势'" [data]="salesData"></g2-bar>
+    </nz-card>
+  </nz-col>
+
 </div>
 <div nz-row nzGutter="24" class="ant-row" style="margin-left: -8px; margin-right: -8px;">
   <nz-col nzXs="12">
