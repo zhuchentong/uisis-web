@@ -28,6 +28,7 @@ const routes: Routes = [
       { path: 'app', loadChildren: './app/app.module#AppModule' },
       { path: 'equip', loadChildren: './equip/equip.module#EquipModule' },
       { path: 'system', loadChildren: './system/system.module#SystemModule' },
+      { path: 'report', loadChildren: './report/report.module#ReportModule' },
       { path: 'laboratory', loadChildren: './laboratory/laboratory.module#LaboratoryModule' },
       { path: 'check', loadChildren: './check/check.module#CheckModule' }
 

@@ -82,16 +82,15 @@
         "icon": "anticon-appstore",
         "children": [{
             "text": "统计分析报表",
-            "link": "/style/typography",
-            "shortcut": true
+            "link": "/report/analyse"
           },
           {
-            "text": "安全检查通过率",
-            "link": "/style/gridmasonry"
+            "text": "隐患统计分析",
+            "link": "/report/checklab"
           },
           {
-            "text": "安全整改通过率ƒ",
-            "link": "/style/colors"
+            "text": "安全整改统计分析",
+            "link": "/report/rectify"
           }
         ]
       },
