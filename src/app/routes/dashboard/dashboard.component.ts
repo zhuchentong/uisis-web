@@ -7,10 +7,20 @@ import { DelonChartModule } from '@delon/chart'
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-  salesData: any[] = new Array(5).fill({}).map((_i, idx) => ({
-    x: `${idx + 1}月`,
-    y: Math.floor(Math.random() * 5)
-  }))
+  salesData = [
+    { x: '1月', y: 5 },
+    { x: '2月', y: 6 },
+    { x: '3月', y: 4 },
+    { x: '4月', y: 8 },
+    { x: '5月', y: 7 },
+    { x: '6月', y: 0 },
+    { x: '7月', y: 0 },
+    { x: '8月', y: 0 },
+    { x: '9月', y: 0 },
+    { x: '10月', y: 0 },
+    { x: '11月', y: 0 },
+    { x: '12月', y: 0 }
+  ]
   percent = 87
   color = '#2f9cff'
   salesPieData = [
