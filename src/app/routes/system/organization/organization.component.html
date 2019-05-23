@@ -1,24 +1,55 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="onCreate()" nz-button nzType="primary">新建</button>
-    <button (click)="onUpdate()" nz-button nzType="primary">修改</button>
-    <button (click)="onDelete()" nz-button nzType="primary">删除</button>
-  </ng-template>
-</page-header>
+<page-header> </page-header>
 
 <div nz-row nzGutter="32">
   <nz-col nzXs="8">
-    <nz-card>
+    <nz-card [nzExtra]="treeExtraTemplate">
+      <ng-template #treeExtraTemplate>
+        <i class="px-sm" nz-icon nzType="plus" nzTheme="outline" (click)="onCreate()"></i>
+        <i
+          class="px-sm"
+          nz-icon
+          nzType="delete"
+          nzTheme="outline"
+          nz-popconfirm
+          nzTitle="确认删除吗?"
+          (nzOnConfirm)="onDelete()"
+        ></i>
+      </ng-template>
+
       <nz-tree #nzTreeComponent [nzExpandAll]="true" [nzData]="treeData" (nzClick)="onSelectNode($event)"> </nz-tree>
     </nz-card>
   </nz-col>
   <nz-col nzXs="16">
-    <nz-card>
-      <st #st [data]="origanizationDataSet" [columns]="columns"></st>
+    <nz-card [nzExtra]="formExtraTemplate" *ngIf="formData; else emptyForm">
+      <ng-template #formExtraTemplate>
+        <button (click)="onUpdate()" nz-button nzType="primary">更新</button>
+      </ng-template>
+      <sf #sf [button]="null" [schema]="schema" [formData]="formData"></sf>
     </nz-card>
+    <ng-template #emptyForm>
+      <nz-card>请选择对应组织进行查看</nz-card>
+    </ng-template>
   </nz-col>
 </div>
 
-<ng-template #organizationNameInput>
-  <input nz-input placeholder="请输入组织名称" [(ngModel)]="organizationName" />
+<ng-template #organizationCreateForm>
+  <form nz-form [formGroup]="createForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">机构名称</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input formControlName="name" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">机构描述</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <textarea
+          formControlName="description"
+          nz-input
+          placeholder="请输入描述信息"
+          [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
 </ng-template>

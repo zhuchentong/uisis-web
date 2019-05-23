@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core'
 import { _HttpClient, ModalHelper } from '@delon/theme'
 import { STColumn, STComponent } from '@delon/abc'
-import { SFSchema } from '@delon/form'
+import { SFSchema, SFComponent } from '@delon/form'
 import { OrganizationService } from 'app/services/organization.service'
 import { NzTreeComponent, NzModalService, NzMessageService } from 'ng-zorro-antd'
 import { OrganizationModel } from 'app/model/organization.model'
+import { FormGroup, FormBuilder, RequiredValidator, Validators } from '@angular/forms'
+import { CdkConnectedOverlay } from '@angular/cdk/overlay'
 @Component({
   selector: 'app-system-organization',
   templateUrl: './organization.component.html',
@@ -14,12 +16,59 @@ export class SystemOrganizationComponent implements OnInit {
   @ViewChild('nzTreeComponent')
   nzTreeComponent: NzTreeComponent
 
-  @ViewChild('organizationNameInput')
-  organizationNameInput
+  @ViewChild('organizationCreateForm')
+  organizationCreateForm: TemplateRef<any>
+
+  @ViewChild('sf')
+  sf: SFComponent
 
   public treeData = []
+  public createForm: FormGroup
   public organizationName = ''
   public origanizationDataSet = []
+
+  public schema: SFSchema = {
+    properties: {
+      id: {
+        type: 'string',
+        ui: {
+          hidden: true
+        }
+      },
+      name: {
+        type: 'string',
+        title: '名称'
+      },
+      code: {
+        type: 'string',
+        title: '编号',
+        minimum: 1
+      },
+      createTime: {
+        type: 'string',
+        title: '创建时间',
+        format: 'date',
+        ui: {
+          widget: 'text'
+        }
+      },
+      creator: {
+        type: 'string',
+        title: '创建人',
+        ui: {
+          widget: 'text'
+        }
+      },
+      description: {
+        type: 'string',
+        title: '描述',
+        ui: {
+          widget: 'textarea',
+          autosize: { minRows: 3, maxRows: 6 }
+        }
+      }
+    }
+  }
 
   public columns: STColumn[] = [
     { title: '序号', type: 'no' },
@@ -35,16 +84,21 @@ export class SystemOrganizationComponent implements OnInit {
     }
   ]
 
-  public formData = {}
+  public formData
 
   constructor(
     private messageService: NzMessageService,
     private organizationService: OrganizationService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.getOrganizationList()
+    this.createForm = this.fb.group({
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]]
+    })
   }
 
   /**
@@ -75,24 +129,28 @@ export class SystemOrganizationComponent implements OnInit {
    * 创建组织
    */
   public onCreate() {
-    this.organizationName = ''
+    this.createForm.reset()
     const node = this.getSelectNode()
     const organization = new OrganizationModel()
-    organization.parent = node ? node.id : ''
-
+    parent = node ? node.id : ''
+    console.log(parent)
     this.modalService.create({
       nzTitle: '创建组织',
-      nzContent: this.organizationNameInput,
+      nzContent: this.organizationCreateForm,
       nzOnOk: () => {
-        if (!this.organizationName) {
+        if (!this.createForm.valid) {
           this.messageService.error('请输入组织名称')
           return false
         }
-        organization.name = this.organizationName
-        this.organizationService.create(organization).subscribe(() => {
-          this.messageService.success('创建成功')
-          this.getOrganizationList()
-        })
+        this.organizationService
+          .create({
+            ...this.createForm.value,
+            parent
+          })
+          .subscribe(() => {
+            this.messageService.success('创建成功')
+            this.getOrganizationList()
+          })
       }
     })
   }
@@ -100,35 +158,21 @@ export class SystemOrganizationComponent implements OnInit {
   /**
    * 修改机构
    */
-  public onUpdate(node) {
-    if (!node) {
-      node = this.getSelectNode()
-    }
+  public onUpdate() {
+    const node = this.sf.value
+    console.log(node)
 
-    if (node) {
-      this.organizationName = node.name
-      this.modalService.create({
-        nzTitle: '创建组织',
-        nzContent: this.organizationNameInput,
-        nzOnOk: () => {
-          if (!this.organizationName) {
-            this.messageService.error('请输入组织名称')
-            return false
-          }
-          this.organizationService
-            .modify({
-              id: node.id,
-              code: node.code,
-              parent: node.parent.id,
-              name: this.organizationName
-            })
-            .subscribe(() => {
-              this.messageService.success('修改成功')
-              this.getOrganizationList()
-            })
-        }
+    this.organizationService
+      .modify({
+        id: node.id,
+        code: node.code,
+        name: node.name,
+        description: node.description
       })
-    }
+      .subscribe(() => {
+        this.messageService.success('修改成功')
+        this.getOrganizationList()
+      })
   }
 
   /**
@@ -148,7 +192,10 @@ export class SystemOrganizationComponent implements OnInit {
 
   public onSelectNode({ node }) {
     if (node.origin) {
-      this.origanizationDataSet = node.origin.children
+      this.formData = Object.assign({}, node.origin, {
+        creator: node.origin.creator.realName
+      })
+      console.log(this.formData)
     }
   }
 
