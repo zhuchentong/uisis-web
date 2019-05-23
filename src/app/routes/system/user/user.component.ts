@@ -6,13 +6,15 @@ import { OperatorService } from 'app/services/operator.service'
 import { PageService } from '@core/http'
 import { DictPipe } from '@shared/pipes/dict.pipe'
 import { NzModalService, NzMessageService } from 'ng-zorro-antd'
+import { OrganizationService } from 'app/services/organization.service'
 @Component({
   selector: 'app-system-user',
   templateUrl: './user.component.html',
-  providers: [OperatorService, PageService, DictPipe]
+  providers: [OperatorService, PageService, DictPipe, OrganizationService]
 })
 export class SystemUserComponent implements OnInit {
   public userDataSet
+  public treeData = []
   @ViewChild('st') st: STComponent
   @ViewChild('sf') sf: SFComponent
   @ViewChild('addUserComponent') addUserComponent
@@ -50,10 +52,12 @@ export class SystemUserComponent implements OnInit {
     private operatorService: OperatorService,
     private modalService: NzModalService,
     private pageService: PageService,
-    private messageService: NzMessageService
+    private messageService: NzMessageService,
+    private organizationService: OrganizationService
   ) {}
 
   ngOnInit() {
+    this.getOrganizationList()
     this.getUserList()
   }
 
@@ -65,7 +69,34 @@ export class SystemUserComponent implements OnInit {
       this.userDataSet = data
     })
   }
+  /**
+   * 获取组织列表
+   */
+  public getOrganizationList() {
+    this.organizationService.getAll().subscribe(data => {
+      const generateTree = node => {
+        node.title = node.name
+        node.key = node.id
+        const children = data.filter(x => x.parent && x.parent.id === node.id)
+        if (children && children.length) {
+          node.children = children
+          node.children.forEach(generateTree)
+        } else {
+          node.isLeaf = true
+        }
+      }
 
+      const rootList = data.filter(x => !x.parent)
+
+      rootList.forEach(generateTree)
+      this.treeData = [...rootList]
+    })
+  }
+  public onSelectNode({ node }) {
+    if (node.origin) {
+      console.log(node.origin)
+    }
+  }
   /**
    * 创建用户
    */
