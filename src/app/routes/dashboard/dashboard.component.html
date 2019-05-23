@@ -1,6 +1,51 @@
-<div class="alain-default__content-title">
-  <h1>
-    Page Name
-    <small>Welcome !</small>
-  </h1>
+<page-header> </page-header>
+<div nz-row nzGutter="24" class="ant-row" style="margin-left: -8px; margin-right: -8px;">
+  <nz-col nzXs="6">
+    <nz-card nzTitle="开学检查进度">
+      <g2-mini-progress percent="78" strokeWidth="8" target="80"></g2-mini-progress>
+      <number-info total="30" subTotal="5" status="down" theme="default"></number-info>
+
+    </nz-card>
+  </nz-col>
+  <nz-col nzXs="6">
+    <nz-card nzTitle="期中检查进度">
+      <g2-mini-progress percent="5" strokeWidth="8" target="80"></g2-mini-progress>
+      <number-info total="30" subTotal="0" status="down" theme="default"></number-info>
+
+    </nz-card>
+  </nz-col>
+  <nz-col nzXs="6">
+    <nz-card nzTitle="期末检查进度">
+      <g2-mini-progress percent="2" strokeWidth="8" target="80"></g2-mini-progress>
+      <number-info total="30" subTotal="0" status="down" theme="default"></number-info>
+
+    </nz-card>
+  </nz-col>
+  <nz-col nzXs="6">
+    <nz-card nzTitle="本月检查进度">
+      <g2-mini-progress percent="88" strokeWidth="8" target="90" color="green"></g2-mini-progress>
+      <number-info total="12" subTotal="5" status="down" theme="default"></number-info>
+    </nz-card>
+  </nz-col>
+</div>
+<div nz-row nzGutter="24" class="ant-row" style="margin-left: -8px; margin-right: -8px;">
+  <nz-col nzXs="24">
+    <nz-card nzTitle="2019年隐患上报数量趋势">
+      <g2-bar height="200" [title]="'2019年隐患上报数量趋势'" [data]="salesData"></g2-bar>
+    </nz-card>
+  </nz-col>
+
+</div>
+<div nz-row nzGutter="24" class="ant-row" style="margin-left: -8px; margin-right: -8px;">
+  <nz-col nzXs="12">
+    <nz-card nzTitle="安全隐患排除率">
+      <g2-gauge [title]="'排除率'" height="200" [percent]="percent" [color]="color"></g2-gauge>
+    </nz-card>
+  </nz-col>
+  <nz-col nzXs="12">
+    <nz-card nzTitle="2019上报隐患组成">
+      <g2-pie [hasLegend]="true" title="2019上报隐患组成" subTitle="隐患数" [total]="total" [data]="salesPieData" height="500">
+      </g2-pie>
+    </nz-card>
+  </nz-col>
 </div>

@@ -15,7 +15,9 @@ import { NgZorroAntdModule } from 'ng-zorro-antd'
 import { CountdownModule } from 'ngx-countdown'
 import { DictPipe } from './pipes/dict.pipe'
 import { UploadComponent } from './components/upload/upload.component'
-const THIRDMODULES = [NgZorroAntdModule, CountdownModule]
+import { DelonChartModule } from '@delon/chart'
+
+const THIRDMODULES = [NgZorroAntdModule, CountdownModule, DelonChartModule]
 // #endregion
 
 // #region your componets & directives
