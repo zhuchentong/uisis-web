@@ -30,7 +30,8 @@ const routes: Routes = [
       { path: 'system', loadChildren: './system/system.module#SystemModule' },
       { path: 'report', loadChildren: './report/report.module#ReportModule' },
       { path: 'laboratory', loadChildren: './laboratory/laboratory.module#LaboratoryModule' },
-      { path: 'check', loadChildren: './check/check.module#CheckModule' }
+      { path: 'check', loadChildren: './check/check.module#CheckModule' },
+      { path: 'document', loadChildren: './document/document.module#DocumentModule' }
 
       // 业务子模块
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WidgetsModule' }

@@ -64,8 +64,7 @@
         "icon": "anticon-edit",
         "children": [{
             "text": "安全检查隐患管理",
-            "link": "/check/item-config",
-            "shortcut": true
+            "link": "/check/item-config"
           },
           {
             "text": "安全检查",
@@ -99,8 +98,7 @@
         "icon": "anticon-profile",
         "children": [{
             "text": "进度报表",
-            "link": "/style/typography",
-            "shortcut": true
+            "link": "/style/typography"
           },
           {
             "text": "提醒设置",
@@ -113,8 +111,7 @@
         "icon": "anticon-check-circle",
         "children": [{
             "text": "事故处理报告",
-            "link": "/style/typography",
-            "shortcut": true
+            "link": "/style/typography"
           },
           {
             "text": "安全事故管理",
@@ -131,8 +128,7 @@
         "icon": "anticon-exception",
         "children": [{
           "text": "App版本发布",
-          "link": "/app/appver",
-          "shortcut": true
+          "link": "/app/appver"
         }]
       },
       {
@@ -140,8 +136,7 @@
         "icon": "anticon-user",
         "children": [{
             "text": "设备管理",
-            "link": "/equip/equipment",
-            "shortcut": true
+            "link": "/equip/equipment"
           },
           {
             "text": "设备二维码打印",
@@ -154,8 +149,7 @@
         "icon": "anticon-cloud",
         "children": [{
             "text": "推送分类管理",
-            "link": "/style/typography",
-            "shortcut": true
+            "link": "/style/typography"
           },
           {
             "text": "消息推送",
@@ -168,12 +162,11 @@
         "icon": "anticon-link",
         "children": [{
             "text": "制度文档管理",
-            "link": "/style/typography",
-            "shortcut": true
+            "link": "/document/institutional"
           },
           {
             "text": "业务文档管理",
-            "link": "/style/gridmasonry"
+            "link": "/document/business"
           }
         ]
       }
