@@ -3,11 +3,12 @@ import { STColumn, STComponent } from '@delon/abc'
 import { SFComponent, SFSchema } from '@delon/form'
 import { PageService } from '@core/http'
 import { DictPipe } from '@shared/pipes/dict.pipe'
-import { NzMessageService, NzModalService } from 'ng-zorro-antd'
+import { NzMessageService, NzModalService, UploadChangeParam, UploadFile } from 'ng-zorro-antd'
 import { DocumentService } from 'app/services/document.service'
 import { DocumentModel } from 'app/model/document.model'
 import { Model } from 'app/model'
-
+import { appConfig } from 'app/config/app.config'
+import { saveAs } from 'file-saver'
 @Component({
   selector: 'app-document',
   templateUrl: './business.component.html',
@@ -15,7 +16,7 @@ import { Model } from 'app/model'
 })
 export class DocumentBusinessComponent implements OnInit {
   public dataSet: any
-  public formData = {}
+  public formData: any
   @ViewChild('st') st: STComponent
 
   @ViewChild('sf') sf: SFComponent
@@ -24,6 +25,12 @@ export class DocumentBusinessComponent implements OnInit {
 
   public schema: SFSchema = {
     properties: {
+      id: {
+        type: 'string',
+        ui: {
+          hidden: true
+        }
+      },
       title: {
         type: 'string',
         title: '标题',
@@ -47,18 +54,23 @@ export class DocumentBusinessComponent implements OnInit {
       },
       file: {
         type: 'string',
-
+        title: '上传文件',
         ui: {
-          hidden: true
+          visibleIf: {
+            id: value => !value
+          },
+          widget: 'upload',
+          action: `${appConfig.server}/uploadFile/upload`,
+          limit: 1,
+          resReName: 'id',
+          urlReName: 'url',
+          preview: (file: UploadFile) => {
+            saveAs(`${appConfig.attach}/${file.url}`, file.originalName || file.response.originalName)
+          }
         }
-      },
-      uploadFile: {
-        type: 'string',
-        title: '文档文件',
-        format: 'uri'
       }
     },
-    required: ['name', 'description', 'sortNo']
+    required: ['name', 'description', 'file']
   }
 
   public columns: STColumn[] = [
@@ -72,8 +84,15 @@ export class DocumentBusinessComponent implements OnInit {
       width: 100,
       fixed: 'right',
       buttons: [
-        { text: '修改', type: 'modal', click: x => this.modify(x) },
-        { text: '删除', type: 'modal', click: x => this.delete(x) }
+        { text: '修改', type: 'none', click: x => this.modify(x) },
+        {
+          text: '下载',
+          type: 'none',
+          click: x => {
+            saveAs(`${appConfig.attach}/${x.file.url}`, x.file.originalName)
+          }
+        },
+        { text: '删除', type: 'del', click: x => this.delete(x) }
       ]
     }
   ]
@@ -104,7 +123,7 @@ export class DocumentBusinessComponent implements OnInit {
   }
 
   public create() {
-    this.formData = {}
+    this.formData = null
     this.modalService.create({
       nzTitle: '新增文档',
       nzContent: this.typeFormComponent,
@@ -144,16 +163,9 @@ export class DocumentBusinessComponent implements OnInit {
   }
 
   public delete(data) {
-    this.modalService.confirm({
-      nzTitle: '<i>操作确认</i>',
-      nzContent: '<b>是否确认删除该条数据?</b>',
-      nzOkType: 'danger',
-      nzOnOk: () => {
-        this.documentService.delete(data.id).subscribe(() => {
-          this.messageService.success('删除成功')
-          this.query()
-        })
-      }
+    this.documentService.delete(data.id).subscribe(() => {
+      this.messageService.success('删除成功')
+      this.query()
     })
   }
 }
