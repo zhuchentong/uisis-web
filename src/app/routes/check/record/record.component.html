@@ -1,9 +1,14 @@
 <page-header [action]="phActionTpl">
   <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
   </ng-template>
 </page-header>
 <nz-card>
   <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [columns]="columns"></st>
+
+  <st [pi]="pageService.pageIndex" [ps]="pageService.pageSize" [total]="pageService.total" [page]="pageService.config"
+    #st [data]="dataSet" [columns]="columns">
+    <ng-template #expand let-item let-index="index" let-column="column">
+      {{ item.itemTitle }}
+    </ng-template>
+  </st>
 </nz-card>

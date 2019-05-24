@@ -1,14 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { _HttpClient, ModalHelper } from '@delon/theme'
 import { STColumn, STComponent } from '@delon/abc'
-import { SFSchema } from '@delon/form'
+import { SFComponent, SFSchema } from '@delon/form'
+import { PageService } from '@core/http'
+import { DictPipe } from '@shared/pipes/dict.pipe'
+import { NzMessageService, NzModalService } from 'ng-zorro-antd'
+import { CheckLabService } from 'app/services/check-lab.service'
+import { CheckRecordModel } from 'app/model/check-record.model'
+import { Model } from 'app/model'
 
 @Component({
   selector: 'app-check-record',
-  templateUrl: './record.component.html'
+  templateUrl: './record.component.html',
+  providers: [CheckLabService, PageService, DictPipe]
 })
 export class CheckRecordComponent implements OnInit {
-  url = `/user`
+  public dataSet: any
+  public formData = {}
+  @ViewChild('st') st: STComponent
+
+  @ViewChild('sf') sf: SFComponent
+
+  @ViewChild('typeFormComponent') typeFormComponent
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -17,28 +29,37 @@ export class CheckRecordComponent implements OnInit {
       }
     }
   }
-  @ViewChild('st') st: STComponent
-  columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
+
+  public columns: STColumn[] = [
+    { title: '实验室', index: 'laboratory.name' },
+    { title: '编号', index: 'checkItemConfigSnapshot.itemNumber' },
+    { title: '风险等级', index: 'checkItemConfigSnapshot.risk_level' },
     {
-      title: '',
+      title: '操作',
+      fixed: 'right',
       buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
+        // { text: '修改', type: 'modal', click: x => this.modify(x) },
+        // { text: '删除', type: 'modal', click: x => this.delete(x) }
       ]
     }
   ]
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) {}
+  constructor(
+    private dictPipe: DictPipe,
+    private checkLabService: CheckLabService,
+    private modalService: NzModalService,
+    public pageService: PageService,
+    private messageService: NzMessageService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.query()
+  }
 
-  add() {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+  public query() {
+    this.checkLabService.queryDanger(this.pageService).subscribe(data => {
+      this.dataSet = data
+      console.log(222, this.dataSet)
+    })
   }
 }

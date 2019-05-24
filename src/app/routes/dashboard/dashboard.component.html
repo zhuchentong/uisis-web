@@ -38,8 +38,10 @@
 </div>
 <div nz-row nzGutter="24" class="ant-row" style="margin-left: -8px; margin-right: -8px;">
   <nz-col nzXs="12">
-    <nz-card nzTitle="安全隐患排除率">
-      <g2-gauge [title]="'排除率'" height="200" [percent]="percent" [color]="color"></g2-gauge>
+    <nz-card nzTitle="安全隐患  排除率 & 检出率">
+      <g2-gauge [title]="'隐患排除率'" height="250" [percent]="percent" [color]="color"></g2-gauge>
+      <g2-gauge [title]="'隐患检出率'" height="250" percent="3" color="green"></g2-gauge>
+
     </nz-card>
   </nz-col>
   <nz-col nzXs="12">
