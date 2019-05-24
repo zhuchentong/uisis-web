@@ -1,5 +1,5 @@
 import { Model } from '.'
-import { Expose, Type } from 'class-transformer'
+import { Expose, Type, TransformClassToPlain, Transform } from 'class-transformer'
 import { LaboratoryRiskLevelModel } from './laboratory-risk-level.model'
 import { LaboratoryTypeModel } from './laboratory-type.model'
 import { OrganizationModel } from './organization.model'
@@ -16,12 +16,15 @@ export class LaboratoryModel extends Model {
   public address: string
   @Expose()
   @Type(() => LaboratoryRiskLevelModel)
+  @Transform(value => value.id, { toPlainOnly: true })
   public laboratoryRiskLevel: LaboratoryRiskLevelModel
   @Expose()
   @Type(() => LaboratoryTypeModel)
+  @Transform(value => value.id, { toPlainOnly: true })
   public laboratoryType: LaboratoryTypeModel
   @Expose()
   @Type(() => OrganizationModel)
+  @Transform(value => value.id, { toPlainOnly: true })
   public organization: OrganizationModel
   @Expose()
   public monthSelfCheckTimes: number
@@ -36,5 +39,6 @@ export class LaboratoryModel extends Model {
 
   @Expose()
   @Type(() => UserModel)
+  @Transform(value => value.map(x => x.id), { toPlainOnly: true })
   public managers: UserModel[]
 }

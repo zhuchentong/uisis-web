@@ -20,5 +20,10 @@ export const operatorController = {
     controller,
     action: 'updateOperator',
     method: 'POST'
+  },
+  queryByOrganization: {
+    controller,
+    action: 'queryByOrganization',
+    method: 'GET'
   }
 }

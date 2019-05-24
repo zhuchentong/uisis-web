@@ -1,23 +1,29 @@
 <page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-  </ng-template>
+  <ng-template #phActionTpl> </ng-template>
 </page-header>
 
 <div nz-row nzGutter="32">
   <nz-col nzXs="8">
     <nz-card nzTitle="组织选择" [nzExtra]="treeExtraTemplate">
-      <ng-template #treeExtraTemplate>
-      </ng-template>
+      <ng-template #treeExtraTemplate> </ng-template>
       <nz-tree #nzTreeComponent [nzData]="treeData" (nzClick)="onSelectNode($event)"> </nz-tree>
     </nz-card>
   </nz-col>
   <nz-col nzXs="16">
     <nz-card [nzExtra]="tableExtraTemplate">
       <ng-template #tableExtraTemplate>
-        <a [hidden]="!selectedCheckPath" (click)="onCreate('LAB')">添加实验室</a>
+        <a [hidden]="!selectedCheckPath" (click)="onCreate()">添加实验室</a>
       </ng-template>
-      <st [pi]="pageService.pageIndex" [ps]="pageService.pageSize" [total]="pageService.total"
-        [page]="pageService.config" #st [data]="dataSet" [columns]="columns">
+      <st
+        [pi]="pageService.pageIndex"
+        [ps]="pageService.pageSize"
+        [total]="pageService.total"
+        [page]="pageService.config"
+        #st
+        [data]="dataSet"
+        [columns]="columns"
+        [scroll]="{ x: '1000px', y: '500px' }"
+      >
         <ng-template st-row="name" let-item>
           <ellipsis lines="1" tooltip>{{ item.name }}</ellipsis>
         </ng-template>
@@ -26,6 +32,6 @@
   </nz-col>
 </div>
 
-<ng-template #checkItemFormComponent>
+<ng-template #laboratoryFormComponent>
   <sf #sf [button]="null" [schema]="schema" [formData]="formData"></sf>
 </ng-template>
