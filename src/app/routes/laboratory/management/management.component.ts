@@ -81,10 +81,9 @@ export class LaboratoryManagementComponent implements OnInit {
   }
 
   constructor(
+    public pageService: PageService,
     private laboratoryService: LaboratoryService,
     private organizationService: OrganizationService,
-    private pageService: PageService,
-
     private messageService: NzMessageService,
     private modalService: NzModalService
   ) {}
