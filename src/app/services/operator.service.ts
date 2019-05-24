@@ -42,4 +42,11 @@ export class OperatorService {
       params
     })
   }
+
+  public queryByOrganization(id): Observable<any> {
+    return this.net.send({
+      service: operatorController.queryByOrganization,
+      append: [id]
+    })
+  }
 }

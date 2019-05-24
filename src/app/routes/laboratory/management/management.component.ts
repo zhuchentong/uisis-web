@@ -10,11 +10,24 @@ import { OrganizationModel } from 'app/model/organization.model'
 import { NgTemplateOutlet } from '@angular/common'
 import { Model } from 'app/model'
 import { PageService } from '@core/http'
+import { LaboratoryTypeService } from 'app/services/laboratory-type.service'
+import { map } from 'rxjs/operators'
+import { OperatorService } from 'app/services/operator.service'
+import { classToPlain } from 'class-transformer'
+import { LaboratoryRiskLevelModel } from 'app/model/laboratory-risk-level.model'
+import { LaboratoryRiskLevelService } from 'app/services/laboratory-risk-level.service'
 
 @Component({
   selector: 'app-laboratory-managenment',
   templateUrl: './management.component.html',
-  providers: [LaboratoryService, OrganizationService, PageService]
+  providers: [
+    LaboratoryService,
+    OrganizationService,
+    PageService,
+    LaboratoryRiskLevelService,
+    LaboratoryTypeService,
+    OperatorService
+  ]
 })
 export class LaboratoryManagementComponent implements OnInit {
   @ViewChild('nzTreeComponent')
@@ -35,9 +48,10 @@ export class LaboratoryManagementComponent implements OnInit {
   // 表格结构
   public columns: STColumn[] = [
     { title: '编号', index: 'code', width: 120, className: 'text-center' },
-    { title: '名称', index: 'name', render: 'name', width: '100px' },
-    { title: '类型', index: 'laboratoryType.name', render: 'typeName', width: 120, className: 'text-center' },
-    { title: '风险等级', index: 'laboratoryRiskLevel.name', render: 'riskLevelTile' },
+    { title: '名称', index: 'name', render: 'name', width: 250 },
+    { title: '类型', index: 'laboratoryType.name', width: 150, className: 'text-center' },
+    { title: '风险等级', index: 'laboratoryRiskLevel.name', width: 200 },
+    // { title: '管理员', index: 'laboratoryRiskLevel.name', render: 'riskLevelTile' },
     {
       title: '操作',
       fixed: 'right',
@@ -75,6 +89,57 @@ export class LaboratoryManagementComponent implements OnInit {
       name: {
         type: 'string',
         title: '实验室名称'
+      },
+      laboratoryType: {
+        type: 'string',
+        title: '实验室类型',
+        ui: {
+          widget: 'select',
+          asyncData: () =>
+            this.laboratoryTypeService.getAll().pipe(
+              map(data =>
+                data.map(x => ({
+                  label: x.name,
+                  value: x.id
+                }))
+              )
+            )
+        }
+      },
+      laboratoryRiskLevel: {
+        type: 'string',
+        title: '实验室安全等级',
+        ui: {
+          widget: 'select',
+          asyncData: () =>
+            this.laboratoryRiskLevelService.getAll().pipe(
+              map(data =>
+                data.map(x => ({
+                  label: x.name,
+                  value: x.id
+                }))
+              )
+            )
+        }
+      },
+      managers: {
+        type: 'string',
+        title: '管理员',
+        ui: {
+          widget: 'select',
+          mode: 'multiple',
+          showSearch: false,
+          maxTagCount: 5,
+          asyncData: () =>
+            this.operatorService.queryByOrganization(this.selectedCheckPath.id).pipe(
+              map(data =>
+                data.map(x => ({
+                  label: x.realName,
+                  value: x.id
+                }))
+              )
+            )
+        }
       }
     },
     required: ['name', 'code']
@@ -85,7 +150,10 @@ export class LaboratoryManagementComponent implements OnInit {
     private laboratoryService: LaboratoryService,
     private organizationService: OrganizationService,
     private messageService: NzMessageService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private laboratoryTypeService: LaboratoryTypeService,
+    private operatorService: OperatorService,
+    private laboratoryRiskLevelService: LaboratoryRiskLevelService
   ) {}
 
   ngOnInit() {
@@ -149,12 +217,49 @@ export class LaboratoryManagementComponent implements OnInit {
   /**
    * 添加数据
    */
-  public onCreate() {}
+  public onCreate() {
+    this.formData = {}
+    this.modalService.create({
+      nzTitle: '创建实验室',
+      nzContent: this.laboratoryFormComponent,
+      nzOnOk: () => {
+        if (!this.sf.valid) {
+          this.messageService.error('请确认输入信息正确')
+          return false
+        }
+        this.laboratoryService
+          .create({
+            ...this.sf.value,
+            organization: this.selectedCheckPath.id
+          })
+          .subscribe(() => {
+            this.getLaboratory()
+            this.messageService.success('创建成功')
+          })
+      }
+    })
+  }
 
   /**
    * 修改数据
    */
-  public onModify(node) {}
+  public onModify(node) {
+    this.formData = classToPlain(node)
+    this.modalService.create({
+      nzTitle: '编辑实验室',
+      nzContent: this.laboratoryFormComponent,
+      nzOnOk: () => {
+        if (!this.sf.valid) {
+          this.messageService.error('请确认输入信息正确')
+          return false
+        }
+        this.laboratoryService.modify(this.sf.value).subscribe(() => {
+          this.getLaboratory()
+          this.messageService.success('更新成功')
+        })
+      }
+    })
+  }
 
   /**
    * 删除数据
@@ -162,13 +267,8 @@ export class LaboratoryManagementComponent implements OnInit {
   public onDelete(id?) {
     id = id || this.selectedCheckPath.id
     this.laboratoryService.delete(id).subscribe(() => {
-      this.refreshCheck()
+      this.getLaboratory()
       this.messageService.success('删除成功')
     })
   }
-
-  /**
-   * 刷新数据
-   */
-  public refreshCheck() {}
 }
