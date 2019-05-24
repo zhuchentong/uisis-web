@@ -4,7 +4,8 @@
   </ng-template>
 </page-header>
 <nz-card>
-  <st #st [data]="dataSet" [columns]="columns">
+  <st [pi]="pageService.pageIndex" [ps]="pageService.pageSize" [total]="pageService.total" [page]="pageService.config"
+    #st [data]="dataSet" [columns]="columns">
     <ng-template st-row="description" let-item>
       <ellipsis lines="1" tooltip>{{ item.description }}</ellipsis>
     </ng-template>

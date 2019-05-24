@@ -109,7 +109,7 @@ export class LaboratoryRiskLevelComponent implements OnInit {
     private dictPipe: DictPipe,
     private laboratoryRiskLevelService: LaboratoryRiskLevelService,
     private modalService: NzModalService,
-    private pageService: PageService,
+    public pageService: PageService,
     private messageService: NzMessageService,
     private store: Store
   ) {}

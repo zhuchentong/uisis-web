@@ -66,7 +66,7 @@ export class LaboratoryTypeComponent implements OnInit {
     private dictPipe: DictPipe,
     private laboratoryTypeService: LaboratoryTypeService,
     private modalService: NzModalService,
-    private pageService: PageService,
+    public pageService: PageService,
     private messageService: NzMessageService
   ) {}
 
