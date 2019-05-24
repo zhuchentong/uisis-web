@@ -46,10 +46,6 @@
             "link": "/laboratory/managent"
           },
           {
-            "text": "二维码管理",
-            "link": "/style/gridmasonry"
-          },
-          {
             "text": "实验室分类管理",
             "link": "/laboratory/type"
           },
@@ -63,16 +59,16 @@
         "text": "安全检查管理",
         "icon": "anticon-edit",
         "children": [{
-            "text": "安全检查隐患管理",
+            "text": "隐患配置管理",
             "link": "/check/item-config"
           },
           {
-            "text": "安全检查",
-            "link": "/style/gridmasonry"
+            "text": "隐患记录管理",
+            "link": "/check/record"
           },
           {
-            "text": "安全检查审核管理",
-            "link": "/style/colors"
+            "text": "隐患处理审核",
+            "link": "/check/review"
           }
         ]
       },
@@ -135,14 +131,9 @@
         "text": "设备管理",
         "icon": "anticon-user",
         "children": [{
-            "text": "设备管理",
-            "link": "/equip/equipment"
-          },
-          {
-            "text": "设备二维码打印",
-            "link": "/style/gridmasonry"
-          }
-        ]
+          "text": "设备管理",
+          "link": "/equip/equipment"
+        }]
       },
       {
         "text": "推送管理",
