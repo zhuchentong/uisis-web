@@ -4,7 +4,8 @@
   </ng-template>
 </page-header>
 <nz-card>
-  <st #st [data]="equipmentDataSet" [columns]="columns"></st>
+  <st [pi]="pageService.pageIndex" [ps]="pageService.pageSize" [total]="pageService.total" [page]="pageService.config"
+    #st [data]="equipmentDataSet" [columns]="columns"></st>
 </nz-card>
 
 <ng-template #equipmentFormComponent>

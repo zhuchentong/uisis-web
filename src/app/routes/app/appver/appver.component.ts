@@ -60,7 +60,7 @@ export class AppAppverComponent implements OnInit {
     private dictPipe: DictPipe,
     private appverService: AppverService,
     private modalService: NzModalService,
-    private pageService: PageService,
+    public pageService: PageService,
     private messageService: NzMessageService
   ) {}
 

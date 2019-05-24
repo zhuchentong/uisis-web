@@ -74,7 +74,7 @@ export class EquipEquipmentComponent implements OnInit {
     private dictPipe: DictPipe,
     private equipmentService: EquipmentService,
     private modalService: NzModalService,
-    private pageService: PageService,
+    public pageService: PageService,
     private messageService: NzMessageService,
     private organizationService: OrganizationService,
     private laboratoryService: LaboratoryService,
