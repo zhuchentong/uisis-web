@@ -1,4 +1,4 @@
-import { NgModule, LOCALE_ID, APP_INITIALIZER, Injector, isDevMode } from '@angular/core'
+import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core'
 import { registerLocaleData } from '@angular/common'
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { BrowserModule } from '@angular/platform-browser'
@@ -19,6 +19,7 @@ import { NgxsModule } from '@ngxs/store'
 import { states } from 'app/store'
 import { StartupService } from '@core/startup/startup.service'
 import { EmptyInterceptor } from '@core/interceptor/empty.interceptor'
+import { appConfig } from 'app/config/app.config'
 
 // #region default language
 // 参考：https://ng-alain.com/docs/i18n
@@ -71,12 +72,12 @@ const INTERCEPTOR_PROVIDES = [
 // #endregion
 
 // #region log module
-const LOG_MODULES = [LoggerModule.forRoot(isDevMode() ? Level.LOG : Level.ERROR)]
+const LOG_MODULES = [LoggerModule.forRoot(appConfig.production ? Level.ERROR : Level.LOG)]
 // #endregion
 
 // #region global third module
 const GLOBAL_THIRD_MODULES = [
-  NgxsModule.forRoot(states, { developmentMode: isDevMode() }),
+  NgxsModule.forRoot(states, { developmentMode: !appConfig.production }),
   NgxsReduxDevtoolsPluginModule.forRoot(),
   NgxsStoragePluginModule.forRoot()
 ]
