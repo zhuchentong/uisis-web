@@ -4,7 +4,7 @@
 
 export const environment = {
   SERVER_URL: `http://106.12.17.212:8000/api`,
-  ATTACH_URL: `http://106.12.17.212:8000/api/uploadFile/getFile`,
+  ATTACH_URL: `http://106.12.17.212/uploadFile`,
   production: false,
   useHash: true,
   hmr: false
