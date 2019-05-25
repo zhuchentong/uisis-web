@@ -8,129 +8,121 @@
     "avatar": "./assets/tmp/img/avatar.jpg",
     "email": "cipchk@qq.com"
   },
-  "menu": [{
-    "text": "主菜单",
-    "group": true,
-    "hideInBreadcrumb": true,
-    "children": [{
-        "text": "系统管理",
-        "icon": "anticon-bulb",
-        "children": [{
-            "text": "学校组织机构管理",
-            "link": "/system/organization"
-          },
-          {
-            "text": "系统用户管理",
-            "link": "/system/user"
-          }
-        ]
-      },
+  "menu": [
+    {
+      "text": "主菜单",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children": [
+        {
+          "text": "首页",
+          "icon": { "type": "icon", "value": "dashboard" },
+          "link": "/dashboard"
+        },
+        {
+          "text": "系统管理",
+          "icon": { "type": "icon", "value": "setting" },
+          "children": [
+            {
+              "text": "学校组织机构管理",
+              "link": "/system/organization"
+            },
+            {
+              "text": "系统用户管理",
+              "link": "/system/user"
+            }
+          ]
+        },
 
-      {
-        "text": "实验室管理",
-        "icon": "anticon-bulb",
-        "children": [{
-            "text": "实验室管理",
-            "link": "/laboratory/managent"
-          },
-          {
-            "text": "实验室分类管理",
-            "link": "/laboratory/type"
-          },
-          {
-            "text": "实验室安全等级管理",
-            "link": "/laboratory/risk-level"
-          }
-        ]
-      },
-      {
-        "text": "安全检查管理",
-        "icon": "anticon-edit",
-        "children": [{
-            "text": "隐患配置管理",
-            "link": "/check/item-config"
-          },
-          {
-            "text": "隐患记录管理",
-            "link": "/check/record"
-          },
-          {
-            "text": "隐患处理审核",
-            "link": "/check/review"
-          }
-        ]
-      },
-      {
-        "text": "报表管理",
-        "icon": "anticon-appstore",
-        "children": [{
-            "text": "统计分析报表",
-            "link": "/report/analyse"
-          },
-          {
-            "text": "隐患统计分析",
-            "link": "/report/checklab"
-          },
-          {
-            "text": "安全整改统计分析",
-            "link": "/report/rectify"
-          }
-        ]
-      },
-      {
-        "text": "安全事故管理",
-        "icon": "anticon-check-circle",
-        "children": [{
-            "text": "事故处理报告",
-            "link": "/style/typography"
-          },
-          {
-            "text": "安全事故管理",
-            "link": "/style/gridmasonry"
-          },
-          {
-            "text": "安全事故审核管理",
-            "link": "/style/gridmasonry"
-          }
-        ]
-      },
-      {
-        "text": "App管理",
-        "icon": "anticon-exception",
-        "children": [{
-          "text": "App版本发布",
-          "link": "/app/appver"
-        }]
-      },
-      {
-        "text": "设备管理",
-        "icon": "anticon-user",
-        "children": [{
+        {
+          "text": "实验室管理",
+          "icon": { "type": "icon", "value": "experiment" },
+          "children": [
+            {
+              "text": "实验室管理",
+              "link": "/laboratory/managent"
+            },
+            {
+              "text": "实验室分类管理",
+              "link": "/laboratory/type"
+            },
+            {
+              "text": "实验室安全等级管理",
+              "link": "/laboratory/risk-level"
+            }
+          ]
+        },
+        {
+          "text": "安全检查管理",
+          "icon": { "type": "icon", "value": "safety" },
+          "children": [
+            {
+              "text": "隐患配置管理",
+              "link": "/check/item-config"
+            },
+            {
+              "text": "隐患记录管理",
+              "link": "/check/record"
+            },
+            {
+              "text": "隐患处理审核",
+              "link": "/check/review"
+            }
+          ]
+        },
+        {
+          "text": "报表管理",
+          "icon": { "type": "icon", "value": "table" },
+          "children": [
+            {
+              "text": "统计分析报表",
+              "link": "/report/analyse"
+            },
+            {
+              "text": "隐患统计分析",
+              "link": "/report/checklab"
+            },
+            {
+              "text": "安全整改统计分析",
+              "link": "/report/rectify"
+            }
+          ]
+        },
+        {
+          "text": "App管理",
+          "icon": { "type": "icon", "value": "mobile" },
+          "children": [
+            {
+              "text": "App版本发布",
+              "link": "/app/appver"
+            }
+          ]
+        },
+        {
           "text": "设备管理",
-          "link": "/equip/equipment"
-        }]
-      },
-      {
-        "text": "推送管理",
-        "icon": "anticon-cloud",
-        "children": [{
-          "text": "消息推送",
-          "link": "/style/gridmasonry"
-        }]
-      },
-      {
-        "text": "文档管理",
-        "icon": "anticon-link",
-        "children": [{
-            "text": "制度文档管理",
-            "link": "/document/institutional"
-          },
-          {
-            "text": "业务文档管理",
-            "link": "/document/business"
-          }
-        ]
-      }
-    ]
-  }]
+          "icon": { "type": "icon", "value": "hdd" },
+          "children": [
+            {
+              "text": "设备管理",
+              "link": "/equip/equipment"
+            }
+          ]
+        },
+        {
+          "text": "文档管理",
+          "icon": { "type": "icon", "value": "read" },
+          "children": [
+            {
+              "text": "制度文档管理",
+              "link": "/document/institutional"
+            },
+            {
+              "text": "业务文档管理",
+              "link": "/document/business"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

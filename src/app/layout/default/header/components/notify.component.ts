@@ -124,8 +124,6 @@ export class HeaderNotifyComponent {
   }
 
   clear(type: string) {
-    console.log(type)
-    console.log(this.store.selectSnapshot(DictState.getDict(DictType.MessageType)))
     const typeItem = this.store.selectSnapshot(DictState.getDict(DictType.MessageType)).find(x => x.name === type)
     if (typeItem) {
       this.messageService.clear(typeItem.code).subscribe(() => {

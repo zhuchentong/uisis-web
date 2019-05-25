@@ -1,11 +1,17 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="create()" nz-button nzType="primary">新建</button>
+<page-header> </page-header>
+<nz-card [nzExtra]="extra">
+  <ng-template #extra>
+    <a (click)="create()">新建</a>
   </ng-template>
-</page-header>
-<nz-card>
-  <st [pi]="pageService.pageIndex" [ps]="pageService.pageSize" [total]="pageService.total" [page]="pageService.config"
-    #st [data]="laboratoryTypeDataSet" [columns]="columns">
+  <st
+    [pi]="pageService.pageIndex"
+    [ps]="pageService.pageSize"
+    [total]="pageService.total"
+    [page]="pageService.config"
+    #st
+    [data]="laboratoryTypeDataSet"
+    [columns]="columns"
+  >
     <ng-template st-row="description" let-item>
       <ellipsis lines="1" tooltip>{{ item.description }}</ellipsis>
     </ng-template>

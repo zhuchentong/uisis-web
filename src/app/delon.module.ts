@@ -43,7 +43,7 @@ import { PageHeaderConfig, STConfig } from '@delon/abc'
 export function fnPageHeaderConfig(): PageHeaderConfig {
   return {
     ...new PageHeaderConfig(),
-    ...({ homeI18n: 'home' } as PageHeaderConfig)
+    ...({ homeI18n: '菜单' } as PageHeaderConfig)
   }
 }
 

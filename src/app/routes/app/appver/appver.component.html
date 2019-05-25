@@ -1,13 +1,19 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="onCreate()" nz-button nzType="primary">新建</button>
+<page-header> </page-header>
+<nz-card [nzExtra]="extra">
+  <ng-template #extra>
+    <a (click)="onCreate()">新建</a>
   </ng-template>
-</page-header>
-<nz-card>
   <!-- <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf> -->
   <!-- <st #st [data]="appverDataSet" [columns]="columns"></st> -->
-  <st [pi]="pageService.pageIndex" [ps]="pageService.pageSize" [total]="pageService.total" [page]="pageService.config"
-    #st [data]="appverDataSet" [columns]="columns">
+  <st
+    [pi]="pageService.pageIndex"
+    [ps]="pageService.pageSize"
+    [total]="pageService.total"
+    [page]="pageService.config"
+    #st
+    [data]="appverDataSet"
+    [columns]="columns"
+  >
   </st>
 </nz-card>
 

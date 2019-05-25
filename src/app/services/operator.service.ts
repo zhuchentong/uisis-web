@@ -49,4 +49,11 @@ export class OperatorService {
       append: [id]
     })
   }
+
+  public changeOperatorPassword(params): Observable<any> {
+    return this.net.send({
+      service: operatorController.changeOperatorPassword,
+      params
+    })
+  }
 }

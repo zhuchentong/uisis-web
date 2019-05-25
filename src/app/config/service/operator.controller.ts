@@ -25,5 +25,10 @@ export const operatorController = {
     controller,
     action: 'queryByOrganization',
     method: 'GET'
+  },
+  changeOperatorPassword: {
+    controller,
+    action: 'changeOperatorPassword',
+    method: 'POST'
   }
 }
