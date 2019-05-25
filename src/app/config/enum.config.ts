@@ -11,6 +11,11 @@ export enum Role {
   LEADER = 'LEADER'
 }
 
+export enum MessageType {
+  TO_DO = 'TO_DO',
+  NOTICE = 'NOTICE',
+  REMIND = 'REMIND'
+}
 export enum CheckTypes {}
 
 export enum DictType {
