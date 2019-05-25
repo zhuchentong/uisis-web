@@ -53,7 +53,9 @@ export function fnDelonAuthConfig(): DelonAuthConfig {
     ...new DelonAuthConfig(),
     ...({
       login_url: '/passport/login',
-      token_send_key: 'X-OperatorToken'
+      token_send_key: 'X-OperatorToken',
+      // 排除对dict的auth检测
+      ignores: [/.*api\/dataDictController.*/]
     } as DelonAuthConfig)
   }
 }

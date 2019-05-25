@@ -138,6 +138,7 @@ export class StartupService {
       // mock：请勿在生产环境中这么使用，viaMock 单纯只是为了模拟一些数据使脚手架一开始能正常运行
       // this.viaMockI18n(resolve, reject);
       // 更新字典数据
+    }).then(() => {
       this.dataDictService.getAll().subscribe(dict => {
         this.store.dispatch(new UpdateDictAction(dict))
       })
