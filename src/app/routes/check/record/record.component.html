@@ -1,16 +1,26 @@
 <page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-  </ng-template>
+  <ng-template #phActionTpl> </ng-template>
 </page-header>
 <nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
+  <sf #sf mode="search" [schema]="searchSchema" (formSubmit)="query()" (formReset)="st.reset($event)"></sf>
 
-  <st [pi]="pageService.pageIndex" [ps]="pageService.pageSize" [total]="pageService.total" [page]="pageService.config"
-    #st [data]="dataSet" [columns]="columns" (change)="change($event)" [expand]="expand" expandRowByClick>
+  <st
+    [pi]="pageService.pageIndex"
+    [ps]="pageService.pageSize"
+    [total]="pageService.total"
+    [page]="pageService.config"
+    #st
+    [data]="dataSet"
+    [columns]="columns"
+    (change)="change($event)"
+    [expand]="expand"
+    expandRowByClick
+  >
     <ng-template #expand let-item let-index="index" let-column="column">
       <sv-container labelWidth="100" [col]="1">
         <sv label="风险等级">{{ item.checkItemConfigSnapshot.riskLevel }}</sv>
-        <sv label="隐患点">{{ item.checkItemConfigSnapshot.itemNumber }}&nbsp;{{ item.checkItemConfigSnapshot.itemTitle }}
+        <sv label="隐患点"
+          >{{ item.checkItemConfigSnapshot.itemNumber }}&nbsp;{{ item.checkItemConfigSnapshot.itemTitle }}
         </sv>
         <sv label="检查内容">{{ item.incompatible }}</sv>
       </sv-container>

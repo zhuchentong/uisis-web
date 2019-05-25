@@ -8,6 +8,11 @@ import { CheckLabService } from 'app/services/check-lab.service'
 import { CheckRecordModel } from 'app/model/check-record.model'
 import { Model } from 'app/model'
 import { DatePipe } from '@angular/common'
+import { CheckRecordDetailComponent } from '../record-detail/record-detail.component'
+import { of } from 'rxjs'
+import { Store } from '@ngxs/store'
+import { DictState } from 'app/store/state/dict.state'
+import { DictType } from 'app/config/enum.config'
 
 @Component({
   selector: 'app-check-record',
@@ -24,9 +29,41 @@ export class CheckRecordComponent implements OnInit {
   @ViewChild('typeFormComponent') typeFormComponent
   searchSchema: SFSchema = {
     properties: {
-      no: {
+      checkRecordState: {
         type: 'string',
-        title: '编号'
+        title: '检查状态',
+        ui: {
+          width: 200,
+          widget: 'select',
+          span: 8,
+          allowClear: true,
+          asyncData: () =>
+            of(
+              this.store.selectSnapshot(DictState.getDict(DictType.CheckRecordState)).map(x => ({
+                label: x.name,
+                value: x.code
+              }))
+            ),
+          default: []
+        }
+      },
+      checkType: {
+        type: 'string',
+        title: '检查类型',
+        ui: {
+          widget: 'select',
+          width: 200,
+          allowClear: true,
+          span: 8,
+          asyncData: () =>
+            of(
+              this.store.selectSnapshot(DictState.getDict(DictType.CheckType)).map(x => ({
+                label: x.name,
+                value: x.code
+              }))
+            ),
+          default: []
+        }
       }
     }
   }
@@ -48,7 +85,13 @@ export class CheckRecordComponent implements OnInit {
       title: '操作',
       fixed: 'right',
       buttons: [
-        { text: '查看', type: 'modal' }
+        {
+          text: '查看',
+          type: 'modal',
+          params: x => ({ id: x.id }),
+          paramsName: 'id',
+          component: CheckRecordDetailComponent
+        }
         // { text: '删除', type: 'modal', click: x => this.delete(x) }
       ]
     }
@@ -60,7 +103,8 @@ export class CheckRecordComponent implements OnInit {
     private checkLabService: CheckLabService,
     private modalService: NzModalService,
     public pageService: PageService,
-    private messageService: NzMessageService
+    private messageService: NzMessageService,
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -68,7 +112,7 @@ export class CheckRecordComponent implements OnInit {
   }
 
   public query() {
-    this.checkLabService.queryDanger(this.pageService).subscribe(data => {
+    this.checkLabService.queryDanger(this.sf.value, { page: this.pageService }).subscribe(data => {
       this.dataSet = data
     })
   }

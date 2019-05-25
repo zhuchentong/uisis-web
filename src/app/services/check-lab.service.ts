@@ -16,9 +16,10 @@ export class CheckLabService {
     })
   }
 
-  public queryDanger(page): Observable<CheckRecordModel> {
+  public queryDanger(params, { page }): Observable<CheckRecordModel> {
     return this.net.send({
       service: checkLabController.queryDanger,
+      params,
       page,
       model: CheckRecordModel
     })
@@ -33,6 +34,13 @@ export class CheckLabService {
   public getRecordContent(id): Observable<any> {
     return this.net.send({
       service: checkLabController.getRecordContent,
+      append: id
+    })
+  }
+
+  public findRecordContent(id): Observable<any> {
+    return this.net.send({
+      service: checkLabController.findRecordContent,
       append: id
     })
   }

@@ -70,7 +70,7 @@ export class DocumentBusinessComponent implements OnInit {
         }
       }
     },
-    required: ['name', 'description', 'file']
+    required: ['title', 'description']
   }
 
   public columns: STColumn[] = [

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, ViewContainerRef } from '@angular/core'
+import { Component, OnInit, ViewChild, TemplateRef, ViewContainerRef, NgZone } from '@angular/core'
 import { NzModalRef, NzMessageService, NzTreeComponent, NzModalService } from 'ng-zorro-antd'
 import { _HttpClient } from '@delon/theme'
 import { STColumn } from '@delon/abc'
@@ -16,7 +16,8 @@ import { OperatorService } from 'app/services/operator.service'
 import { classToPlain } from 'class-transformer'
 import { LaboratoryRiskLevelModel } from 'app/model/laboratory-risk-level.model'
 import { LaboratoryRiskLevelService } from 'app/services/laboratory-risk-level.service'
-
+import { saveAs } from 'file-saver'
+import * as printJS from 'print-js'
 @Component({
   selector: 'app-laboratory-managenment',
   templateUrl: './management.component.html',
@@ -27,6 +28,7 @@ import { LaboratoryRiskLevelService } from 'app/services/laboratory-risk-level.s
     LaboratoryRiskLevelService,
     LaboratoryTypeService,
     OperatorService
+    // NgZone
   ]
 })
 export class LaboratoryManagementComponent implements OnInit {
@@ -58,11 +60,55 @@ export class LaboratoryManagementComponent implements OnInit {
       width: 200,
       className: 'text-center',
       buttons: [
+        {
+          text: '二维码',
+          type: 'none',
+          children: [
+            {
+              text: '打印',
+              click: x => {
+                this.qrConfig.value = `lab:${x.id}`
+                setTimeout(() => {
+                  printJS('qrcode', 'html')
+                })
+              }
+            },
+            {
+              text: '下载',
+              click: x => {
+                this.qrConfig.value = `lab:${x.id}`
+                setTimeout(() => {
+                  const printContent = document.querySelector('#qrcode img') as CanvasImageSource
+                  const canvas = document.createElement('canvas')
+                  canvas.width = this.qrConfig.size
+                  canvas.height = this.qrConfig.size
+                  const ctx = canvas.getContext('2d')
+                  ctx.drawImage(printContent, 0, 0)
+                  canvas.toBlob(blob => {
+                    saveAs(blob, 'pretty image.png')
+                  })
+                })
+              }
+            }
+          ]
+        },
         { text: '修改', type: 'none', click: x => this.onModify(x) },
         { text: '删除', type: 'del', click: x => this.onDelete(x.id) }
       ]
     }
   ]
+
+  public qrConfig = {
+    value: '',
+    background: '#fff',
+    backgroundAlpha: 1.0,
+    foreground: '#000',
+    foregroundAlpha: 1.0,
+    level: 'L',
+    mime: 'image/png',
+    padding: 10,
+    size: 220
+  }
 
   // 表单默认数据
   public formData = {}
@@ -153,7 +199,7 @@ export class LaboratoryManagementComponent implements OnInit {
     private modalService: NzModalService,
     private laboratoryTypeService: LaboratoryTypeService,
     private operatorService: OperatorService,
-    private laboratoryRiskLevelService: LaboratoryRiskLevelService
+    private laboratoryRiskLevelService: LaboratoryRiskLevelService // private zone: NgZone
   ) {}
 
   ngOnInit() {

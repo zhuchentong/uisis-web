@@ -3,10 +3,12 @@ import { STColumn, STComponent } from '@delon/abc'
 import { SFComponent, SFSchema } from '@delon/form'
 import { PageService } from '@core/http'
 import { DictPipe } from '@shared/pipes/dict.pipe'
-import { NzMessageService, NzModalService } from 'ng-zorro-antd'
+import { NzMessageService, NzModalService, UploadFile } from 'ng-zorro-antd'
 import { DocumentService } from 'app/services/document.service'
 import { DocumentModel } from 'app/model/document.model'
 import { Model } from 'app/model'
+import { appConfig } from 'app/config/app.config'
+import { saveAs } from 'file-saver'
 
 @Component({
   selector: 'app-document',
@@ -24,6 +26,12 @@ export class DocumentInstitutionalComponent implements OnInit {
 
   public schema: SFSchema = {
     properties: {
+      id: {
+        type: 'string',
+        ui: {
+          hidden: true
+        }
+      },
       title: {
         type: 'string',
         title: '标题',
@@ -47,17 +55,23 @@ export class DocumentInstitutionalComponent implements OnInit {
       },
       file: {
         type: 'string',
+        title: '上传文件',
         ui: {
-          hidden: true
+          visibleIf: {
+            id: value => !value
+          },
+          widget: 'upload',
+          action: `${appConfig.server}/uploadFile/upload`,
+          limit: 1,
+          resReName: 'id',
+          urlReName: 'url',
+          preview: (file: UploadFile) => {
+            saveAs(`${appConfig.attach}/${file.url}`, file.originalName || file.response.originalName)
+          }
         }
-      },
-      uploadFile: {
-        type: 'string',
-        title: '文档文件',
-        format: 'uri'
       }
     },
-    required: ['name', 'description', 'sortNo']
+    required: ['title', 'description']
   }
 
   public columns: STColumn[] = [
@@ -72,6 +86,13 @@ export class DocumentInstitutionalComponent implements OnInit {
       fixed: 'right',
       buttons: [
         { text: '修改', type: 'modal', click: x => this.modify(x) },
+        {
+          text: '下载',
+          type: 'none',
+          click: x => {
+            saveAs(`${appConfig.attach}/${x.file.url}`, x.file.originalName)
+          }
+        },
         { text: '删除', type: 'modal', click: x => this.delete(x) }
       ]
     }
@@ -103,7 +124,7 @@ export class DocumentInstitutionalComponent implements OnInit {
   }
 
   public create() {
-    this.formData = {}
+    this.formData = null
     this.modalService.create({
       nzTitle: '新增文档',
       nzContent: this.typeFormComponent,

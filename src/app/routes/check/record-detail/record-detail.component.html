@@ -1,0 +1,52 @@
+<nz-tabset>
+  <nz-tab nzTitle="基础信息">
+    <nz-card title="实验室信息" *ngIf="record">
+      <sv-container [col]="2">
+        <sv label="实验室">{{ record.laboratory.name }}</sv>
+        <sv label="实验室编码">{{ record.laboratory.code }}</sv>
+        <sv label="实验室类型">{{ record.laboratory.laboratoryType.name }}</sv>
+        <sv label="所属机构">{{ record.laboratory.organization.name }}</sv>
+        <sv label="实验室地址">{{ record.laboratory.address }}</sv>
+        <sv label="安全等级">{{ record.laboratory.laboratoryRiskLevel.name }}</sv>
+        <sv label="实验室管理员">
+          <nz-tag *ngFor="let user of record.laboratory.managers">{{ user.realName }}</nz-tag>
+        </sv>
+      </sv-container>
+    </nz-card>
+
+    <nz-card title="风险信息" *ngIf="record">
+      <sv-container [col]="1">
+        <sv label="检查项编号">{{ record.checkItemConfigSnapshot.itemNumber }}</sv>
+        <sv label="检查要点">{{ record.checkItemConfigSnapshot.itemPoint }}</sv>
+        <sv label="检查标题">{{ record.checkItemConfigSnapshot.itemTitle }}</sv>
+        <sv label="风险等级">{{ record.checkItemConfigSnapshot.riskLevel }}级别</sv>
+        <sv label="检查状态">{{ record.checkRecordState | dict }}</sv>
+        <sv label="检查类型">{{ record.checkRecordState.checkType }}</sv>
+        <sv label="不符合项内容">{{ record.incompatible }}</sv>
+        <sv label="备注">{{ record.remark }}</sv>
+      </sv-container>
+    </nz-card>
+  </nz-tab>
+  <nz-tab nzTitle="检查记录" *ngIf="content">
+    <nz-collapse>
+      <nz-collapse-panel *ngFor="let item of content" [nzHeader]="item.createTime | date: 'yyyy-MM-dd HH:mm:ss'">
+        <sv-container [col]="2" layout="vertical">
+          <sv label="内容">{{ item.content }}</sv>
+          <sv label="检查人">{{ item.creator.realName }}</sv>
+          <sv label="检查时间">{{ item.createTime | date: 'yyyy-MM-dd HH:mm:ss' }}</sv>
+          <sv label="附件">
+            <div class="d-flex attachments">
+              <div (click)="download(file)" *ngFor="let file of item.attachments">
+                <div class="icon-container" [ngSwitch]="file.extensionName">
+                  <img *ngSwitchCase="'jpg'" [src]="appConfig.attach + '/' + file.url" />
+                  <i *ngSwitchCase="'pdf'" nz-icon nzType="file-pdf" nzTheme="outline"></i>
+                  <i *ngSwitchDefault nz-icon nzType="file" nzTheme="outline"></i>
+                </div>
+              </div>
+            </div>
+          </sv>
+        </sv-container>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </nz-tab>
+</nz-tabset>

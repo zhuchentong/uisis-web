@@ -20,5 +20,10 @@ export const checkLabController = {
     controller,
     action: 'getRecordContent',
     method: 'GET'
+  },
+  findRecordContent: {
+    controller,
+    action: 'findRecordContent',
+    method: 'GET'
   }
 }

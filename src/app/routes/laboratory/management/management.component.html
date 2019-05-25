@@ -35,3 +35,18 @@
 <ng-template #laboratoryFormComponent>
   <sf #sf [button]="null" [schema]="schema" [formData]="formData"></sf>
 </ng-template>
+
+<qr
+  id="qrcode"
+  [value]="qrConfig.value"
+  [background]="qrConfig.background"
+  [backgroundAlpha]="qrConfig.backgroundAlpha"
+  [foreground]="qrConfig.foreground"
+  [foregroundAlpha]="qrConfig.foregroundAlpha"
+  [level]="qrConfig.level"
+  [mime]="qrConfig.mime"
+  [padding]="qrConfig.padding"
+  [size]="qrConfig.size"
+  style="border:1px solid #999;visibility: hidden;"
+>
+</qr>
